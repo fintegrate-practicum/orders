@@ -7,7 +7,7 @@ import { ManagerController } from '../controller/manager.controller';
 
 
 @Module({
-  // imports: [MongooseModule.for],
+  // imports: [MongooseModule.forFeature([{name: Order.name, schema: OrderSchema }])],
   controllers: [ManagerController],
   providers: [ManagerService],
 })
