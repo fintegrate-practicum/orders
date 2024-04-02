@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Wizard from './Wizard';
+import { Button } from '@mui/material';
+
 
 function App() {
+  const [showWizard, setShowWizard] = useState(false)
   return (
     <div className="App">
+      {showWizard && <Wizard />}
       <header className="App-header">
+        <Button
+          variant='contained'
+          style={{ color: 'orange', background: 'yellow', fontWeight: 'bold', borderRadius: '15px' }}
+          size='large'
+          onClick={() => setShowWizard(!showWizard)}>
+          {showWizard ? 'hide wizard' : 'show wizard'}
+        </Button>
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
