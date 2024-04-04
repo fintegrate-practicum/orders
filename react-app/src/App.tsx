@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Wizard from './Wizard';
@@ -13,7 +13,6 @@ function App() {
       <header className="App-header">
         <Button
           variant='contained'
-          style={{ color: 'orange', background: 'yellow', fontWeight: 'bold', borderRadius: '15px' }}
           size='large'
           onClick={() => setShowWizard(!showWizard)}>
           {showWizard ? 'hide wizard' : 'show wizard'}
