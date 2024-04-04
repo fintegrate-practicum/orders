@@ -1,5 +1,6 @@
 {
-  "compilerOptions": {
+  "compilerOptions": {   
+    "types": ["axios"], 
     "target": "es5",
     "lib": [
       "dom",
