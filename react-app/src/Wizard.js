@@ -36,9 +36,6 @@ const Wizard = () => {
         <br/>
         <br/>
     </div>
-
-
-
 }
 
 export default Wizard
