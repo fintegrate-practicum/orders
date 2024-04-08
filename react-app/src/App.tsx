@@ -1,15 +1,16 @@
 import { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Wizard from './Wizard';
 import { Button } from '@mui/material';
+import BaseWizard from './Stepper/BaseWizard';
 
 
 function App() {
   const [showWizard, setShowWizard] = useState(false)
+
   return (
     <div className="App">
-      {showWizard && <Wizard />}
+      {showWizard && <BaseWizard />}
       <header className="App-header">
         <Button
           variant='contained'
