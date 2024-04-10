@@ -1,7 +1,7 @@
 import { CreateUserDto } from '../dto/create-user.dto'
 export class CreateOrderDto {
     custemer: CreateUserDto;
-    products:product[] ;
+    // products:product[] ;
     status: boolean;
     destinationAddress:{
       city:string,
