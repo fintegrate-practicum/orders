@@ -1,45 +1,7 @@
-// import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-// import { Document } from 'mongoose';
 // import { CreateUserDto } from '../dto/create-user.dto'
-// export type OrderDocument = Order & Document;
-
-
-// @Schema({
-//   toJSON: {
-//     getters: true,
-//     virtuals: true,
-//   },
-//   timestamps: true,
-// })
-
-// export class Order {
-  
-//   @Prop({ required: true })
-//   custemer: CreateUserDto;
-
-//   @Prop({ required: true })
-//   // products:product[] ;
-
-//   @Prop({
-//     required: true,
-//     type: Object,
-//     default: {
-//       city: '',
-//       street: '',
-//       numBuild: 0,
-//     },
-//   })
-//   destinationAddress: Object;
-
-//   @Prop({ required: true })
-//   status: boolean;
-  
-//   @Prop({ required: true })
-//   date: Date;
-// }
-// export const OrderSchema = SchemaFactory.createForClass(Order);
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { OrderStatus } from '../enums/order.enum'
 
 export type OrderDocument = Order & Document;
 
@@ -52,10 +14,19 @@ export type OrderDocument = Order & Document;
 })
 export class Order {
   @Prop({ required: true })
-  customerName: string;
+  user: String;
+
+  //מטיפוס משתמש שאמור להגיע מצוות משתמשים...
+  // @Prop({ required: true })
+  // user: CreateUserDto;
 
   @Prop({ required: true })
-  products: string[];
+  products: String[];
+
+
+  //מטיפוס מוצר שאמור להגיע מצוות האדום...
+  // @Prop({ required: true })
+  // products: Product[];
 
   @Prop({
     required: true,
@@ -63,19 +34,14 @@ export class Order {
       city: String,
       street: String,
       numBuild: Number,
-    },
-    default: {
-      city: '',
-      street: '',
-      numBuild: 0,
-    },
+    }
   })
-  destinationAddress: { city: string; street: string; numBuild: number };
+  destinationAddress: { city: String; street: String; numBuild: Number };
 
-  @Prop({ required: true })
-  status: string; // או enum אם יש רשימה ספציפית של ערכים
+  @Prop({ default: OrderStatus.HANDLING })
+  status: OrderStatus;
 
-  @Prop({ required: true })
+  @Prop({ default: new Date() })
   date: Date;
 }
 

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Order } from '../entities/order.entity'; // Assuming you have an Order entity
+import { Order } from '../entities/order.entity';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import mongoose from "mongoose";
@@ -19,15 +19,6 @@ export class OrderService {
       throw new HttpException('Failed to create order', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
-  // async getAll(): Promise<{ order: String; status: HttpStatus }> {
-  //   try {
-  //     return { order: "allOrders", status: HttpStatus.CREATED };
-  //   } catch (error) {
-  //     throw new HttpException('Failed to create order', HttpStatus.INTERNAL_SERVER_ERROR);
-  //   }
-  // }
-
 
   async upDate(id: string, createOrderDto: UpdateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
     // Validate the object ID
@@ -83,6 +74,4 @@ export class OrderService {
       throw new HttpException('Failed to find orders by customer name', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
-
 }
