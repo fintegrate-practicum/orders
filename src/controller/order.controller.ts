@@ -3,6 +3,8 @@ import { CreateOrderDto } from '../dto/create-order.dto'
 import { UpdateOrderDto } from '../dto/update-order.dto'
 import { OrderService } from '../service/order.service'
 import { Order } from '../entities/order.entity';
+import mongoose from "mongoose";
+
 @Controller('orders')
 export class OrderController {
     constructor(private readonly orderService: OrderService) { }
@@ -10,8 +12,8 @@ export class OrderController {
     @Post()
     async AddAnOrder(@Body() newOrder: CreateOrderDto, @Res() response): Promise<Order> {
         try {
-            // if(newOrder.products.length===0)
-            //     return response.status(HttpStatus.NOT_FOUND).send("your are not have products  ");
+            if(newOrder.products.length===0)
+                return response.status(HttpStatus.NOT_FOUND).send("your are not have products  ");
             const result = await this.orderService.create(newOrder);
             console.log("result",result);
             return response.status(HttpStatus.CREATED).send(result);
@@ -20,17 +22,16 @@ export class OrderController {
         }
     }
 
-
+    
     @Put(':id')
     async UpdateOrder(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto, @Res() response): Promise<Order> {
         try {
-            // Validate the object ID
-            // if (!mongoose.isValidObjectId(id)) {
-            //   throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
-
-            // Update the order
-            const updatedOrder = await this.orderService.upDate(id, updateOrderDto);
-            return response.status(HttpStatus.OK).send(updatedOrder);
+            if (!mongoose.isValidObjectId(id)) {
+                console.log("enter");
+                return response.status(HttpStatus.NOT_FOUND).send('Invalid code');
+              }
+            const updatedOrder = await this.orderService.update(id, updateOrderDto);
+             return response.status(HttpStatus.OK).send(updatedOrder);
 
         }
         catch (error) {

@@ -10,6 +10,7 @@ import mongoose from "mongoose";
 export class OrderService {
   constructor(@InjectModel(Order.name) private readonly orderModel: Model<Order>) { }
 
+
   async create(createOrderDto: CreateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
     try {
       const createdOrder = new this.orderModel(createOrderDto);
@@ -20,17 +21,13 @@ export class OrderService {
     }
   }
 
-  async upDate(id: string, createOrderDto: UpdateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
-    // Validate the object ID
-    if (!mongoose.isValidObjectId(id)) {
-      throw new HttpException('Invalid code', HttpStatus.NOT_FOUND);
-    }
+  async update(id: string, createOrderDto: UpdateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
+
     const updatedOrder = await this.orderModel
       .findByIdAndUpdate(id, createOrderDto, { new: true })
       .exec();
     if (!updatedOrder) {
-      throw new HttpException(`Order with ID ${id} not found`, HttpStatus.INTERNAL_SERVER_ERROR);
-
+      return { order: null, status: HttpStatus.INTERNAL_SERVER_ERROR };
     }
     return { order: updatedOrder, status: HttpStatus.CREATED };
 
