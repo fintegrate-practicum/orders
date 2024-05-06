@@ -43,6 +43,10 @@ export class Order {
 
   @Prop({ default: new Date() })
   date: Date;
+  //קוד בית העסק אמור להישלף מפרטי המנהל
+  @Prop({ required: true })
+  businessCode: String
+
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

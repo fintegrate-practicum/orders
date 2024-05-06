@@ -54,16 +54,14 @@ export class OrderService {
     }
   }
 
-  async findAll(): Promise<Order[]> {
+  async findAllByBusinessCode(businessCode: string): Promise<Order[]> {
     try {
-      return this.orderModel.find().exec();
-
+      return this.orderModel.find({ businessCode }).exec();
     } catch (error) {
-      throw new HttpException('Failed to getAllOrders order', HttpStatus.INTERNAL_SERVER_ERROR);
-
+      throw new HttpException('Failed to getAllByBusinessCode order', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
+  //צריך לשנות בשיביל פרטי העסק
   async findAllByCustomerName(customerName: string): Promise<Order[]> {
     try {
       return this.orderModel.find({ customerName }).exec();

@@ -12,26 +12,26 @@ export class OrderController {
     @Post()
     async AddAnOrder(@Body() newOrder: CreateOrderDto, @Res() response): Promise<Order> {
         try {
-            if(newOrder.products.length===0)
-                return response.status(HttpStatus.NOT_FOUND).send("your are not have products  ");
+            if (newOrder.products.length === 0)
+                return response.status(HttpStatus.UNPROCESSABLE_ENTITY).send("your are not have products");
             const result = await this.orderService.create(newOrder);
-            console.log("result",result);
+            console.log("result", result);
             return response.status(HttpStatus.CREATED).send(result);
         } catch (error) {
             throw new HttpException('Failed to create order', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    
+
     @Put(':id')
     async UpdateOrder(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto, @Res() response): Promise<Order> {
         try {
             if (!mongoose.isValidObjectId(id)) {
                 console.log("enter");
                 return response.status(HttpStatus.NOT_FOUND).send('Invalid code');
-              }
+            }
             const updatedOrder = await this.orderService.update(id, updateOrderDto);
-             return response.status(HttpStatus.OK).send(updatedOrder);
+            return response.status(HttpStatus.OK).send(updatedOrder);
 
         }
         catch (error) {
@@ -50,19 +50,19 @@ export class OrderController {
         }
     }
 
-    @Get()
-    async GetAllOrders(@Res() response): Promise<Order[]> {
+    @Get(':businessCode')
+    async GetAllOrdersByBusinessCode(@Param('businessCode') businessCode: string, @Res() response): Promise<Order[]> {
         try {
-            const result = await this.orderService.findAll();
+            const result = await this.orderService.findAllByBusinessCode(businessCode);
             return response.status(HttpStatus.OK).send(result);
 
         } catch (error) {
             throw new HttpException(error.message, error.status);
         }
     }
-
+    //צריך לשנות בשיביל פםרטי העסק
     @Get('user/:customerName')
-    async GetOrdersByUser(@Param('customerName') customerName: string, @Res() response): Promise<Order[]> {
+    async GetOrdersByBusinessCodeByUser(@Param('customerName') customerName: string, @Res() response): Promise<Order[]> {
         try {
             const orders = await this.orderService.findAllByCustomerName(customerName);
             return response.status(HttpStatus.OK).send(orders);

@@ -12,5 +12,6 @@ export class CreateOrderDto {
     street: String,
     numBuild: Number
   };
+  businessCode: String;
   date: Date;
 }
