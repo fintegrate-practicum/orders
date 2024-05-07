@@ -8,21 +8,11 @@ import { useState } from 'react';
 const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4']
 const stepDescription = ['step 1 description', 'step 2 description', 'step 3 description', 'step 4 description']
 
-// if wanted to disabled the 'next' button until all the step is complete, maybe needs to use this array: 
-// const steps = [
-//     { name: 'Step 1', completed: false },
-//     { name: 'Step 2', completed: false },
-//     { name: 'Step 3', completed: false },
-//     { name: 'Step 4', completed: false }]
-// and add on the Button component a line like this:
-// disabled={steps[activeStep].completed == false}
-
 const BaseWizard = () => {
 
     const [activeStep, setActiveStep] = useState(0)
     const handleNext = () => {
         setActiveStep(activeStep + 1)
-        // add an action when the 'finish' button is clicked
     }
 
     const handleBack = () => {
