@@ -17,15 +17,14 @@ const stepDescription = ['step 1 description', 'step 2 description', 'step 3 des
 // and add on the Button component a line like this:
 // disabled={steps[activeStep].completed == false}
 
-
 const BaseWizard = () => {
 
     const [activeStep, setActiveStep] = useState(0)
     const handleNext = () => {
         setActiveStep(activeStep + 1)
         // add an action when the 'finish' button is clicked
-
     }
+
     const handleBack = () => {
         setActiveStep(activeStep - 1)
     }
