@@ -1,5 +1,5 @@
-import axios from "axios";
-import process from "process";
+import axios from 'axios';
+import process from 'process';
 import { useState } from 'react';
 export const DeleteOrder = async (id: string): Promise<any> => {
     const url: string = `${process.env.URL}/api/orders/${id}`;
