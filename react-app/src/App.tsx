@@ -4,7 +4,6 @@ import logo from './logo.svg';
 import './App.css';
 import { Button } from '@mui/material';
 import BaseWizard from './Stepper/BaseWizard';
-import React from 'react';
 
 function App() {
   const [showWizard, setShowWizard] = useState(false)
