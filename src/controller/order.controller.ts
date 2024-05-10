@@ -15,10 +15,11 @@ export class OrderController {
             if (newOrder.products.length === 0)
                 return response.status(HttpStatus.UNPROCESSABLE_ENTITY).send("your are not have products");
             const result = await this.orderService.create(newOrder);
-            console.log("result", result);
             return response.status(HttpStatus.CREATED).send(result);
-        } catch (error) {
-            throw new HttpException('Failed to create order', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        catch (error) {
+            return response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({title:'Failed to create order',content:error.message});
+
         }
     }
 
@@ -31,11 +32,10 @@ export class OrderController {
                 return response.status(HttpStatus.NOT_FOUND).send('Invalid code');
             }
             const updatedOrder = await this.orderService.update(id, updateOrderDto);
-            return response.status(HttpStatus.OK).send(updatedOrder);
-
+            return response.status(HttpStatus).send(updatedOrder);
         }
         catch (error) {
-            throw new HttpException('Failed to update order', HttpStatus.INTERNAL_SERVER_ERROR);
+            return response.status(error.status).send(error.message);
         }
     }
 
@@ -43,31 +43,40 @@ export class OrderController {
     @Delete(':id')
     async DeleteOrder(@Param('id') id: string, @Res() response) {
         try {
+            if (!mongoose.isValidObjectId(id)) {
+                return response.status(HttpStatus.NOT_FOUND).send('Invalid code');
+            }
+            if (!(this.generalService.checkingPermissions(id)))
+                return response.status().send("אין אפשרות למחוק הזמנה זו");
             const result = await this.orderService.remove(id);
-            return response.status(HttpStatus.OK).send(result);
-        } catch (error) {
-            throw new HttpException(error.message, error.status);
+            return response.status(HttpStatus.OK).send("ההזמנה :" + id + "נמחקה");
+        }
+        catch (error) {
+            return response.status(error.status).send(error.message);
         }
     }
 
     @Get(':businessCode')
     async GetAllOrdersByBusinessCode(@Param('businessCode') businessCode: string, @Res() response): Promise<Order[]> {
         try {
+
             const result = await this.orderService.findAllByBusinessCode(businessCode);
             return response.status(HttpStatus.OK).send(result);
 
         } catch (error) {
-            throw new HttpException(error.message, error.status);
+            return response.status(error.status).send({title:'Failed to GetAllOrdersByBusinessCode',content:error.message});
         }
     }
     //צריך לשנות בשיביל פםרטי העסק
-    @Get('user/:customerName')
-    async GetOrdersByBusinessCodeByUser(@Param('customerName') customerName: string, @Res() response): Promise<Order[]> {
+    @Get('user/:businessCode/:customerId')
+    async GetOrdersByBusinessCodeByUser(@Param('customerId') customerId: string, @Param('businessCode') businessCode: string, @Res() response): Promise<Order[]> {
         try {
-            const orders = await this.orderService.findAllByCustomerName(customerName);
-            return response.status(HttpStatus.OK).send(orders);
+            
+            const result = await this.orderService.findAllByBusinessCodeAndCustomerId(customerId,businessCode);
+            return response.status(HttpStatus.OK).send(result);
+
         } catch (error) {
-            throw new HttpException(error.message, error.status);
+            return response.status(error.status).send({title:'Failed to GetOrdersByBusinessCodeByUser',content:error.message});
         }
     }
 

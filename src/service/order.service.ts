@@ -10,26 +10,29 @@ import mongoose from "mongoose";
 export class OrderService {
   constructor(@InjectModel(Order.name) private readonly orderModel: Model<Order>) { }
 
-
   async create(createOrderDto: CreateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
     try {
       const createdOrder = new this.orderModel(createOrderDto);
       const savedOrder = await createdOrder.save();
-      return { order: savedOrder, status: HttpStatus.CREATED };
+      return { order: savedOrder, status: HttpStatus.CREATED};
     } catch (error) {
       throw new HttpException('Failed to create order', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   async update(id: string, createOrderDto: UpdateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
+    try {
+      const updatedOrder = await this.orderModel
+            .findByIdAndUpdate(id, createOrderDto, { new: true }).exec();
+      if (!updatedOrder) {
+        return { order: null, status: HttpStatus.INTERNAL_SERVER_ERROR };
+      }
+      return { order: updatedOrder, status: HttpStatus.CREATED };
+    } catch (error) {
+      throw new HttpException('Failed to update order', HttpStatus.INTERNAL_SERVER_ERROR);
 
-    const updatedOrder = await this.orderModel
-      .findByIdAndUpdate(id, createOrderDto, { new: true })
-      .exec();
-    if (!updatedOrder) {
-      return { order: null, status: HttpStatus.INTERNAL_SERVER_ERROR };
     }
-    return { order: updatedOrder, status: HttpStatus.CREATED };
+
 
   }
 
@@ -62,11 +65,11 @@ export class OrderService {
     }
   }
   //צריך לשנות בשיביל פרטי העסק
-  async findAllByCustomerName(customerName: string): Promise<Order[]> {
+  async findAllByBusinessCodeAndCustomerId(customerId: string, businessCode: string): Promise<Order[]> {
     try {
-      return this.orderModel.find({ customerName }).exec();
+      return this.orderModel.find({ customerId, businessCode }).exec();
     } catch (error) {
-      throw new HttpException('Failed to find orders by customer name', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException('Failed to find orders by customer and busienss', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }
