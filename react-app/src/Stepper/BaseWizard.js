@@ -4,7 +4,6 @@ import Stepper from '@mui/material/Stepper';
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import { useState } from 'react';
-
 const steps = ['Step 1', 'Step 2', 'Step 3', 'Step 4']
 const stepDescription = ['step 1 description', 'step 2 description', 'step 3 description', 'step 4 description']
 

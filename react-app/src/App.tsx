@@ -1,16 +1,15 @@
 import React from 'react';
 import { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { Button } from '@mui/material';
 import BaseWizard from './Stepper/BaseWizard';
-
-
+import AccountMenu from "./Menu";
 function App() {
   const [showWizard, setShowWizard] = useState(false)
 
   return (
     <div>
+     {AccountMenu()} 
       {showWizard && (<BaseWizard />)}
 
       <Button
