@@ -8,26 +8,26 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
-// import { CiGrid41 } from "react-icons/ci";
+import { BlurOnSharp } from '@mui/icons-material';
+import Link from '@mui/material/Link';
+
 
 export default function ParentComponent() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   return (
     <React.Fragment>
-      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', marginLeft:'40%'}}>
+      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', marginTop: '5%', marginLeft: '5%', padding: '2%' }}>
         <Typography sx={{ minWidth: 100 }}>Categories --</Typography>
         <Tooltip title="To select a category click here">
           <IconButton
@@ -78,40 +78,51 @@ export default function ParentComponent() {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose}>
-          <Avatar /> Women
+          <ListItemIcon>
+            <BlurOnSharp fontSize="small" />
+          </ListItemIcon>
+          {/* <Link to="/Page_1" style={{margin:'2%'}}></Link>  */}
+
+          <Link href="/Page_1"  style={{margin:'2%'}} color="inherit">
+           {'Women'} 
+          </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
-          <Avatar /> Men
+          <ListItemIcon>
+            <BlurOnSharp fontSize="small" />
+          </ListItemIcon>
+          <Link href="#" color="inherit">
+         {'Men'} 
+       </Link>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <PersonAdd fontSize="small" />
+            <BlurOnSharp fontSize="small" />
           </ListItemIcon>
-          Girls
+          <Link href="#" color="inherit">
+            {'Girls'}    
+          </Link>
+     
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
-            <Settings fontSize="small" />
+            <BlurOnSharp fontSize="small" />
           </ListItemIcon>
-          Boys
+          <Link href="#" color="inherit"> 
+            {'Boys'}   
+          </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
-          Others
+           <Link href="#" color="inherit"> 
+             {'Others'}   
+           </Link>
         </MenuItem>
       </Menu>
-      
-      {/* <BasicButtonGroup /> */}
+      {/* <Links_Categories /> */}
     </React.Fragment>
   );
 }
-
-// function BasicButtonGroup() {
-//   return (
-//     <CiGrid41 fontSize={40}/>
-//   );
-// }
-// export { BasicButtonGroup };

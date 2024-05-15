@@ -22,14 +22,13 @@ const BaseWizard = () => {
     const [activeStep, setActiveStep] = useState(0)
     const handleNext = () => {
         setActiveStep(activeStep + 1)
-        // add an action when the 'finish' button is clicked
-
+// 
     }
     const handleBack = () => {
         setActiveStep(activeStep - 1)
     }
 
-    return <div>
+    return <div id="wizard">
         <Stepper activeStep={activeStep} style={{margin : '15px'}}>
             {steps.map((step) =>
             (<Step key={step}>
@@ -41,7 +40,7 @@ const BaseWizard = () => {
             onClick={handleBack}
             disabled={activeStep === 0}
             variant='contained'
-            style={{ textTransform: 'none', margin: '10px' }} > Back
+            style={{ textTransform: 'none', margin: '10px'}} > Back
         </Button>
         <Button
             onClick={handleNext}
