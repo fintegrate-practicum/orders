@@ -38,8 +38,8 @@ export class Order {
   })
   destinationAddress: { city: String; street: String; numBuild: Number };
 
-  @Prop({ default: OrderStatus.HANDLING })
-  status: OrderStatus;
+  // @Prop({ default: OrderStatus.HANDLING })
+  // status: OrderStatus;
 
   @Prop({ default: new Date() })
   date: Date;

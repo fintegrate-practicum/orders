@@ -31,4 +31,6 @@ export class ManagerController {
   remove(@Param('id') id: string) {
     return this.managerService.remove(+id);
   }
+
+  
 }

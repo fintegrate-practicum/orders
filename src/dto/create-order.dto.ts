@@ -6,7 +6,7 @@ export class CreateOrderDto {
   //רק בשביל ההרצה
   user: String;
   products: String[];
-  status: OrderStatus;
+  // status: OrderStatus;
   destinationAddress: {
     city: String,
     street: String,

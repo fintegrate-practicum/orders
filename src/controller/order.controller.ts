@@ -32,7 +32,7 @@ export class OrderController {
                 return response.status(HttpStatus.NOT_FOUND).send('Invalid code');
             }
             const updatedOrder = await this.orderService.update(id, updateOrderDto);
-            return response.status(HttpStatus).send(updatedOrder);
+            return response.status(HttpStatus.OK).send(updatedOrder);
         }
         catch (error) {
             return response.status(error.status).send(error.message);
@@ -46,10 +46,10 @@ export class OrderController {
             if (!mongoose.isValidObjectId(id)) {
                 return response.status(HttpStatus.NOT_FOUND).send('Invalid code');
             }
-            if (!(this.generalService.checkingPermissions(id)))
-                return response.status().send("אין אפשרות למחוק הזמנה זו");
+            // if (!(this.generalService.checkingPermissions(id)))
+            //     return response.status().send("אין אפשרות למחוק הזמנה זו");
             const result = await this.orderService.remove(id);
-            return response.status(HttpStatus.OK).send("ההזמנה :" + id + "נמחקה");
+            return response.status(HttpStatus.OK).send("order:" + id + "deleted");
         }
         catch (error) {
             return response.status(error.status).send(error.message);
@@ -68,11 +68,12 @@ export class OrderController {
         }
     }
     //צריך לשנות בשיביל פםרטי העסק
-    @Get('user/:businessCode/:customerId')
-    async GetOrdersByBusinessCodeByUser(@Param('customerId') customerId: string, @Param('businessCode') businessCode: string, @Res() response): Promise<Order[]> {
+    @Get(':businessCode/:user')
+    async GetOrdersByBusinessCodeByUser(@Param('user') user: string, @Param('businessCode') businessCode: string, @Res() response): Promise<Order[]> {
         try {
+            console.log("enter");
             
-            const result = await this.orderService.findAllByBusinessCodeAndCustomerId(customerId,businessCode);
+            const result = await this.orderService.findAllByBusinessCodeAndCustomerId(user,businessCode);
             return response.status(HttpStatus.OK).send(result);
 
         } catch (error) {

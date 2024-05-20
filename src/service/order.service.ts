@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Order } from '../entities/order.entity';
@@ -13,7 +13,9 @@ export class OrderService {
   async create(createOrderDto: CreateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
     try {
       const createdOrder = new this.orderModel(createOrderDto);
+      console.log(createdOrder);
       const savedOrder = await createdOrder.save();
+      console.log(savedOrder);
       return { order: savedOrder, status: HttpStatus.CREATED};
     } catch (error) {
       throw new HttpException('Failed to create order', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -65,9 +67,9 @@ export class OrderService {
     }
   }
   //צריך לשנות בשיביל פרטי העסק
-  async findAllByBusinessCodeAndCustomerId(customerId: string, businessCode: string): Promise<Order[]> {
+  async findAllByBusinessCodeAndCustomerId(user: string, businessCode: string): Promise<Order[]> {
     try {
-      return this.orderModel.find({ customerId, businessCode }).exec();
+      return this.orderModel.find({ user, businessCode }).exec();
     } catch (error) {
       throw new HttpException('Failed to find orders by customer and busienss', HttpStatus.INTERNAL_SERVER_ERROR);
     }
