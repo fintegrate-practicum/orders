@@ -11,7 +11,14 @@ body{
     
 
 }
-.shopping-bag-title{
+.product-name{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    
+
+}
+/* .shopping-bag-title{
     font-weight: bolder;
     font-size: large;
 }
@@ -24,7 +31,7 @@ body{
 }
 .product-name-img{
     margin-right: 10px;
-}
+} */
 .image-text-container {
     text-align: center; /* Center align text and image */
   }
