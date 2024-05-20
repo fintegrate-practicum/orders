@@ -1,42 +1,24 @@
-// import { Test, TestingModule } from '@nestjs/testing';
-// import { OrderController } from './order.controller';
-// import { OrderService } from '../service/order.service';
-
-// describe('OrderController', () => {
-//   let controller: OrderController;
-
-//   beforeEach(async () => {
-//     const module: TestingModule = await Test.createTestingModule({
-//       controllers: [OrderController],
-//       providers: [OrderService],
-//     }).compile();
-
-//     controller = module.get<OrderController>(OrderController);
-//   });
-
-//   it('should be defined', () => {
-//     expect(controller).toBeDefined();
-//   });
-// });
-
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrderController } from './order.controller';
 import { OrderService } from '../service/order.service';
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Order, OrderSchema } from '../entities/order.entity'; // Assuming OrderModel is defined in order.model.ts
+import { Order } from '../entities/order.entity'; // Assuming OrderModel is defined in order.model.ts
+import { getModelToken } from '@nestjs/mongoose';
 
 describe('OrderController', () => {
   let controller: OrderController;
   let app: INestApplication;
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [OrderController],
-      providers: [OrderService,
-        MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }])],
+      providers: [
+        OrderService,
+        {
+          provide: getModelToken(Order.name),
+          useValue: Order,
+        }
+      ],
     }).compile();
 
     controller = module.get<OrderController>(OrderController);
