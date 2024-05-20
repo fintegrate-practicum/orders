@@ -1,0 +1,115 @@
+
+
+.PayWin {
+  margin:0px auto;
+  padding:0px 0px 0px 0px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width:640px;
+}
+#WrapperBorder {
+  border-width: 4px;
+  border-top: 0px;
+  border-spacing: 0px;
+  border-style: solid;
+  border-color: #2d6ca3;
+}
+
+#MicroMainContent { 
+  margin:0px 0px 0px 0px;
+  padding:0px 0px 0px 0px;
+  height:336px;
+  background-color:#ffffff;
+  overflow-x:hidden;
+  overflow-y:scroll;
+  direction:rtl;
+}
+/*
+.BoxSMS {
+    width: 605px;
+    margin: 0px auto;
+    background-image: url('../../Images/PayWin/bg_sms.gif');
+    background-repeat: no-repeat;
+    text-align: right;
+}
+*/
+.BoxPhone {
+  width:605px; 
+  margin:0px auto;
+  background-image:url('../../Images/PayWin/bg_tl.gif');
+  background-repeat: no-repeat;
+  text-align:right;
+}
+
+
+.lineSpace {
+	margin-top: 6px;
+}
+.NumberImg {
+	vertical-align: middle;
+	margin: 3px 0 3px 3px;
+}
+.BoxFooter {
+  width:605px; 
+  height:20px; 
+  margin:0px auto;
+  background-image:url('../../Images/PayWin/bg_strip_down.gif'); 
+  background-repeat: no-repeat;
+  text-align:right;
+}
+
+.MicroPrice { 
+  padding-right:400px; 
+  color:#3C86C3; 
+  font-weight:bold; 
+  font-size:16px;
+}
+.InstructionSteps {
+  padding-right:170px;
+}
+
+.SendButton {
+    margin-right: 300px;
+    border-style: none;
+    background-color: transparent;
+    margin-top: 6px;
+    background-image: url('../../Images/PayWin/send_b.gif');
+    display: block;
+    width: 86px;
+    height: 31px;
+    background-repeat: no-repeat;
+}
+
+.ClosePopUp {
+    position:absolute;
+    top:5px;
+    right:5px;
+    background-image: url('../../Images/close.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+}
+
+.MicroPanel td{
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #000000;
+}
+
+
+.modalBackground 
+{
+   background-color:Gray;
+   filter:alpha(opacity=70);
+   opacity:0.7;   
+}
+
+.MicroPanel
+        {
+           /* display:none;*/
+            width:640px;
+            height:340px;
+       }
+ 
+
