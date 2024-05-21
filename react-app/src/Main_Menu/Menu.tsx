@@ -10,8 +10,7 @@ import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
 import { BlurOnSharp } from '@mui/icons-material';
-import Link from '@mui/material/Link';
-
+import { Link } from 'react-router-dom'; 
 
 export default function ParentComponent() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -81,48 +80,44 @@ export default function ParentComponent() {
           <ListItemIcon>
             <BlurOnSharp fontSize="small" />
           </ListItemIcon>
-          {/* <Link to="/Page_1" style={{margin:'2%'}}></Link>  */}
-
-          <Link href="/Page_1"  style={{margin:'2%'}} color="inherit">
-           {'Women'} 
+          <Link to="/Women_Page" style={{ textDecoration: 'none', color: 'inherit', margin: '2%' }}>
+            Women
           </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <BlurOnSharp fontSize="small" />
           </ListItemIcon>
-          <Link href="#" color="inherit">
-         {'Men'} 
-       </Link>
+          <Link to="/Men_Page" style={{ textDecoration: 'none', color: 'inherit' }}>
+            Men
+          </Link>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <BlurOnSharp fontSize="small" />
           </ListItemIcon>
-          <Link href="#" color="inherit">
-            {'Girls'}    
+          <Link to="/Girls_Page" style={{ textDecoration: 'none', color: 'inherit' }}>
+            Girls
           </Link>
-     
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <BlurOnSharp fontSize="small" />
           </ListItemIcon>
-          <Link href="#" color="inherit"> 
-            {'Boys'}   
+          <Link to="/Boys_Page" style={{ textDecoration: 'none', color: 'inherit' }}>
+            Boys
           </Link>
         </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
-           <Link href="#" color="inherit"> 
-             {'Others'}   
-           </Link>
+          <Link to="/Others_Page" style={{ textDecoration: 'none', color: 'inherit' }}>
+            Others
+          </Link>
         </MenuItem>
       </Menu>
-      {/* <Links_Categories /> */}
     </React.Fragment>
   );
 }
