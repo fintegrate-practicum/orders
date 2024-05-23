@@ -2,12 +2,17 @@ import { Controller, Post, Delete, Body, HttpStatus, Res, HttpException, Get, Pu
 import { CreateOrderDto } from '../dto/create-order.dto'
 import { UpdateOrderDto } from '../dto/update-order.dto'
 import { OrderService } from '../service/order.service'
+import { GeneralService } from '../service/general.service'
 import { Order } from '../entities/order.entity';
+import { Types } from 'mongoose';
+// import { OrderStatus } from '../enums/order.enum'
+import { CreateManagerDto } from '../dto/create-manager.dto';
 import mongoose from "mongoose";
 
 @Controller('orders')
 export class OrderController {
-    constructor(private readonly orderService: OrderService) { }
+    constructor(private readonly orderService: OrderService,private readonly generalService:GeneralService) { }
+    // constructor(private readonly orderService: OrderService) { }
 
     @Post()
     async AddAnOrder(@Body() newOrder: CreateOrderDto, @Res() response): Promise<Order> {
@@ -21,27 +26,32 @@ export class OrderController {
             throw new HttpException('Failed to create order', HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
+    
     @Put(':id')
-    async UpdateOrder(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto, @Res() response): Promise<Order> {
+    async UpdateOrder(@Param('id') id:Types.ObjectId, @Body() order: CreateOrderDto, @Res() response): Promise<Order> {
         try {
-            if (!mongoose.isValidObjectId(id)) {
-                console.log("enter");
-                return response.status(HttpStatus.NOT_FOUND).send('Invalid code');
+            // if (!mongoose.isValidObjectId(order.id)) {
+            //     return response.status(HttpStatus.NOT_FOUND).send('Invalid code');
+            // }
+            //,CreateManagerDto.setting
+            if (!(this.generalService.checkingPermissions(id,order.businessCode))) {
+                console.log("false");
+                return response.status(HttpStatus.FORBIDDEN).send('Not authorized');
             }
-            const updatedOrder = await this.orderService.update(id, updateOrderDto);
+            console.log("controller put");
+            
+            const updatedOrder = await this.orderService.update(id,order);
+            console.log('updatedOrder',updatedOrder);
+            
             return response.status(HttpStatus.OK).send(updatedOrder);
-
         }
         catch (error) {
-            throw new HttpException('Failed to update order', HttpStatus.INTERNAL_SERVER_ERROR);
+            return response.status(HttpStatus.INTERNAL_SERVER_ERROR).send(order);
         }
     }
 
-
     @Delete(':id')
-    async DeleteOrder(@Param('id') id: string, @Res() response) {
+    async DeleteOrder(@Param('id') id: String, @Res() response) {
         try {
             const result = await this.orderService.remove(id);
             return response.status(HttpStatus.OK).send(result);

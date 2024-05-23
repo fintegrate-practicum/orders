@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Types, Model } from 'mongoose';
 import { Order } from '../entities/order.entity';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { UpdateOrderDto } from '../dto/update-order.dto';
 import mongoose from "mongoose";
+
 
 @Injectable()
 export class OrderService {
@@ -20,12 +21,13 @@ export class OrderService {
       throw new HttpException('Failed to create order', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-
-  async update(id: string, createOrderDto: UpdateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
+  // createOrderDto: UpdateOrderDto
+  async update(id:Types.ObjectId, createOrderDto: CreateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
+    console.log("put services");
 
     const updatedOrder = await this.orderModel
-      .findByIdAndUpdate(id, createOrderDto, { new: true })
-      .exec();
+      .findByIdAndUpdate(id, createOrderDto, { new: true });
+    console.log("put services updatedOrder!!!!!!!",updatedOrder);
     if (!updatedOrder) {
       return { order: null, status: HttpStatus.INTERNAL_SERVER_ERROR };
     }
@@ -33,7 +35,7 @@ export class OrderService {
 
   }
 
-  async remove(id: string): Promise<{ order: Order; status: HttpStatus }> {
+  async remove(id: String): Promise<{ order: Order; status: HttpStatus }> {
     try {
       // Validate the object ID
       if (!mongoose.isValidObjectId(id)) {
