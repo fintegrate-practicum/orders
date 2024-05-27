@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Types, Model } from 'mongoose';
 import { Order } from '../entities/order.entity';
@@ -11,28 +11,30 @@ import mongoose from "mongoose";
 export class OrderService {
   constructor(@InjectModel(Order.name) private readonly orderModel: Model<Order>) { }
 
-
   async create(createOrderDto: CreateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
     try {
       const createdOrder = new this.orderModel(createOrderDto);
+      console.log(createdOrder);
       const savedOrder = await createdOrder.save();
-      return { order: savedOrder, status: HttpStatus.CREATED };
+      console.log(savedOrder);
+      return { order: savedOrder, status: HttpStatus.CREATED};
     } catch (error) {
       throw new HttpException('Failed to create order', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-  // createOrderDto: UpdateOrderDto
-  async update(id:Types.ObjectId, createOrderDto: CreateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
-    console.log("put services");
 
-    const updatedOrder = await this.orderModel
-      .findByIdAndUpdate(id, createOrderDto, { new: true });
-    console.log("put services updatedOrder!!!!!!!",updatedOrder);
-    if (!updatedOrder) {
-      return { order: null, status: HttpStatus.INTERNAL_SERVER_ERROR };
+  async update(ObjectId:Types.ObjectId, createOrderDto: CreateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
+    try{
+      const updatedOrder = await this.orderModel.findOneAndUpdate({ id: ObjectId },{ $set: createOrderDto }, { new: true });
+      if (!updatedOrder) {
+        return { order: null, status: HttpStatus.INTERNAL_SERVER_ERROR };
+      }
+      else{
+        return { order: updatedOrder, status: HttpStatus.ACCEPTED };
+      }
+    }catch(err){
+      throw new HttpException('Failed to service update order', HttpStatus.INTERNAL_SERVER_ERROR + err);
     }
-    return { order: updatedOrder, status: HttpStatus.CREATED };
-
   }
 
   async remove(id: String): Promise<{ order: Order; status: HttpStatus }> {
@@ -64,11 +66,11 @@ export class OrderService {
     }
   }
   //צריך לשנות בשיביל פרטי העסק
-  async findAllByCustomerName(customerName: string): Promise<Order[]> {
+  async findAllByBusinessCodeAndCustomerId(user: string, businessCode: string): Promise<Order[]> {
     try {
-      return this.orderModel.find({ customerName }).exec();
+      return this.orderModel.find({ user, businessCode }).exec();
     } catch (error) {
-      throw new HttpException('Failed to find orders by customer name', HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new HttpException('Failed to find orders by customer and busienss', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 }

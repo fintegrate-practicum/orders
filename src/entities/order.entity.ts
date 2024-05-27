@@ -37,8 +37,8 @@ export class Order {
   })
   destinationAddress: { city: String; street: String; numBuild: Number };
 
-  // @Prop({ default: OrderStatus.ACCEPTED })
-  // status: OrderStatus;
+  @Prop({ default: OrderStatus.ACCEPTED })
+  status: OrderStatus;
 
   @Prop({ default: new Date() })
   date: Date;
