@@ -4,7 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 import { Button } from '@mui/material';
 import BaseWizard from './Stepper/BaseWizard';
-
+import Orders from './orders/Orders';
 
 function App() {
   const [showWizard, setShowWizard] = useState(false)
@@ -19,6 +19,7 @@ function App() {
           onClick={() => setShowWizard(!showWizard)}>
           {showWizard ? 'hide wizard' : 'show wizard'}
         </Button>
+        <Orders/>
     </div>
   );
 }
