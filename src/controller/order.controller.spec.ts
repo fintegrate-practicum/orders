@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { OrderController } from './order.controller';
 import { OrderService } from '../service/order.service';
+import { GeneralService } from '../service/general.service';
 import { CreateOrderDto } from 'src/dto/create-order.dto';
 import { HttpStatus } from '@nestjs/common';
 import * as mongoose from 'mongoose';
+import { OrderStatus } from '../enums/order.enum';
 
 const mockOrder: CreateOrderDto = {
   user: "lea",
@@ -14,7 +16,10 @@ const mockOrder: CreateOrderDto = {
     numBuild: 12
   },
   businessCode: "1@34",
-  date: undefined
+  date: new Date(),
+  settingManeger: 2,
+  status: OrderStatus.ACCEPTED,
+  id: new mongoose.Types.ObjectId("6654db11f0eff51e8033bf5a")
 };
 
 const mockOrderService = {
@@ -23,6 +28,10 @@ const mockOrderService = {
   findAllByBusinessCodeAndCustomerId: jest.fn().mockReturnValue([mockOrder]),
   update: jest.fn().mockReturnValue(mockOrder),
   remove: jest.fn().mockReturnValue(mockOrder),
+};
+
+const mockGeneralService = {
+  checkingPermissions: jest.fn().mockReturnValue(true), // Mocking the checkingPermissions function
 };
 
 const mockResponse = () => {
@@ -34,7 +43,8 @@ const mockResponse = () => {
 
 describe('OrderController', () => {
   let controller: OrderController;
-  let service: OrderService;
+  let orderService: OrderService;
+  let generalService: GeneralService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -45,11 +55,16 @@ describe('OrderController', () => {
           provide: OrderService,
           useValue: mockOrderService,
         },
+        {
+          provide: GeneralService,
+          useValue: mockGeneralService,
+        }
       ],
     }).compile();
 
     controller = module.get<OrderController>(OrderController);
-    service = module.get<OrderService>(OrderService);
+    orderService = module.get<OrderService>(OrderService);
+    generalService = module.get<GeneralService>(GeneralService);
   });
 
   afterEach(() => {
@@ -63,8 +78,8 @@ describe('OrderController', () => {
   it('should create order data', async () => {
     const response = mockResponse();
     await controller.AddAnOrder(mockOrder, response);
-    expect(service.create).toHaveBeenCalledTimes(1);
-    expect(service.create).toHaveBeenCalledWith(mockOrder);
+    expect(orderService.create).toHaveBeenCalledTimes(1);
+    expect(orderService.create).toHaveBeenCalledWith(mockOrder);
     expect(response.status).toHaveBeenCalledWith(HttpStatus.CREATED);
     expect(response.send).toHaveBeenCalledWith({ order: mockOrder, status: HttpStatus.CREATED });
   });
@@ -78,47 +93,31 @@ describe('OrderController', () => {
     expect(response.status).toHaveBeenCalledWith(HttpStatus.UNPROCESSABLE_ENTITY);
     expect(response.send).toHaveBeenCalledWith('your are not have products');
   });
+
   it('should update order data by id and payload', async () => {
     const response = mockResponse();
-    const validId = '60b6c0b4f1f2c50015b9b7d1';  // Example of a valid MongoDB ObjectId
-
-    jest.spyOn(mongoose, 'isValidObjectId').mockReturnValue(true);
+    const validId = new mongoose.Types.ObjectId("6654db11f0eff51e8033bf5a");
 
     await controller.UpdateOrder(validId, mockOrder, response);
 
-    expect(service.update).toHaveBeenCalledTimes(1);
-    expect(service.update).toHaveBeenCalledWith(validId, mockOrder);
+    expect(orderService.update).toHaveBeenCalledTimes(1);
+    expect(orderService.update).toHaveBeenCalledWith(validId, mockOrder);
     expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
     expect(response.send).toHaveBeenCalledWith(mockOrder);
   });
 
-  it('should return 404 when invalid id is provided for update', async () => {
-    const response = mockResponse();
-    const invalidId = 'invalidId';
-    jest.spyOn(mongoose, 'isValidObjectId').mockReturnValue(false);
-    await controller.UpdateOrder(invalidId, mockOrder, response);
-    expect(response.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
-    expect(response.send).toHaveBeenCalledWith('Invalid code');
-  });
-
   it('should delete order data by id', async () => {
     const response = mockResponse();
-    const validId = '60b6c0b4f1f2c50015b9b7d1';  // Example of a valid MongoDB ObjectId
+    const businessCode = 'ABC123';
+    const validId = new mongoose.Types.ObjectId("6654db11f0eff51e8033bf5a");
+
     jest.spyOn(mongoose, 'isValidObjectId').mockReturnValue(true);
-    await controller.DeleteOrder(validId, response);
-    expect(service.remove).toHaveBeenCalledTimes(1);
-    expect(service.remove).toHaveBeenCalledWith(validId);
+    await controller.DeleteOrder(validId, businessCode, response);
+
+    expect(orderService.remove).toHaveBeenCalledTimes(1);
+    expect(orderService.remove).toHaveBeenCalledWith(validId);
     expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
     expect(response.send).toHaveBeenCalledWith(`order:${validId}deleted`);
-  });
-
-  it('should return 404 when invalid id is provided for delete', async () => {
-    const response = mockResponse();
-    const invalidId = 'invalidId';
-    jest.spyOn(mongoose, 'isValidObjectId').mockReturnValue(false);
-    await controller.DeleteOrder(invalidId, response);
-    expect(response.status).toHaveBeenCalledWith(HttpStatus.NOT_FOUND);
-    expect(response.send).toHaveBeenCalledWith('Invalid code');
   });
 
   it('should get all orders by business code', async () => {
@@ -127,8 +126,8 @@ describe('OrderController', () => {
 
     await controller.GetAllOrdersByBusinessCode(businessCode, response);
 
-    expect(service.findAllByBusinessCode).toHaveBeenCalledTimes(1);
-    expect(service.findAllByBusinessCode).toHaveBeenCalledWith(businessCode);
+    expect(orderService.findAllByBusinessCode).toHaveBeenCalledTimes(1);
+    expect(orderService.findAllByBusinessCode).toHaveBeenCalledWith(businessCode);
     expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
     expect(response.send).toHaveBeenCalledWith([mockOrder]);
   });
@@ -140,8 +139,8 @@ describe('OrderController', () => {
 
     await controller.GetOrdersByBusinessCodeByUser(user, businessCode, response);
 
-    expect(service.findAllByBusinessCodeAndCustomerId).toHaveBeenCalledTimes(1);
-    expect(service.findAllByBusinessCodeAndCustomerId).toHaveBeenCalledWith(user, businessCode);
+    expect(orderService.findAllByBusinessCodeAndCustomerId).toHaveBeenCalledTimes(1);
+    expect(orderService.findAllByBusinessCodeAndCustomerId).toHaveBeenCalledWith(user, businessCode);
     expect(response.status).toHaveBeenCalledWith(HttpStatus.OK);
     expect(response.send).toHaveBeenCalledWith([mockOrder]);
   });

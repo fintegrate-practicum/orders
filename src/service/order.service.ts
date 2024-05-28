@@ -1,10 +1,8 @@
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Types, Model } from 'mongoose';
 import { Order } from '../entities/order.entity';
 import { CreateOrderDto } from '../dto/create-order.dto';
-import { UpdateOrderDto } from '../dto/update-order.dto';
-import mongoose from "mongoose";
 
 @Injectable()
 export class OrderService {
@@ -13,7 +11,6 @@ export class OrderService {
   async create(createOrderDto: CreateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
     try {
       const createdOrder = new this.orderModel(createOrderDto);
-      console.log(createdOrder);
       const savedOrder = await createdOrder.save();
       return { order: savedOrder, status: HttpStatus.CREATED };
     } catch (error) {
@@ -21,32 +18,26 @@ export class OrderService {
     }
   }
 
-  async update(id: string, createOrderDto: UpdateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
+  async update(ObjectId: Types.ObjectId, createOrderDto: CreateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
     try {
-      const updatedOrder = await this.orderModel
-        .findByIdAndUpdate(id, createOrderDto, { new: true }).exec();
+      const updatedOrder = await this.orderModel.findOneAndUpdate({ id: ObjectId }, { $set: createOrderDto }, { new: true });
       if (!updatedOrder) {
         return { order: null, status: HttpStatus.INTERNAL_SERVER_ERROR };
       }
-      return { order: updatedOrder, status: HttpStatus.CREATED };
-    } catch (error) {
-      throw new HttpException('Failed to update order', HttpStatus.INTERNAL_SERVER_ERROR);
-
+      else {
+        return { order: updatedOrder, status: HttpStatus.CREATED };
+      }
+    } catch (err) {
+      throw new HttpException('Failed to service update order', HttpStatus.INTERNAL_SERVER_ERROR + err);
     }
   }
 
-  async remove(id: string): Promise<{ order: Order; status: HttpStatus }> {
+  async remove(id: Types.ObjectId): Promise<{ order: Order; status: HttpStatus }> {
     try {
-      if (!mongoose.isValidObjectId(id)) {
-        throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
-      }
-
-      const deletedOrder = await this.orderModel.findByIdAndDelete(id).exec();
-
+      const deletedOrder = await this.orderModel.findOneAndDelete({ id: id });
       if (!deletedOrder) {
         throw new HttpException(`Order with ID ${id} not found`, HttpStatus.NOT_FOUND);
       }
-
       return { order: deletedOrder, status: HttpStatus.OK };
     } catch (error) {
       throw new HttpException('Failed to delete order', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,7 +46,7 @@ export class OrderService {
 
   async findAllByBusinessCode(businessCode: string): Promise<Order[]> {
     try {
-      return this.orderModel.find({ businessCode }).exec();
+      return await this.orderModel.find({ businessCode }).exec();
     } catch (error) {
       throw new HttpException('Failed to getAllByBusinessCode order', HttpStatus.INTERNAL_SERVER_ERROR);
     }
