@@ -15,8 +15,7 @@ export class OrderService {
       const createdOrder = new this.orderModel(createOrderDto);
       console.log(createdOrder);
       const savedOrder = await createdOrder.save();
-      console.log(savedOrder);
-      return { order: savedOrder, status: HttpStatus.CREATED};
+      return { order: savedOrder, status: HttpStatus.CREATED };
     } catch (error) {
       throw new HttpException('Failed to create order', HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -25,7 +24,7 @@ export class OrderService {
   async update(id: string, createOrderDto: UpdateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
     try {
       const updatedOrder = await this.orderModel
-            .findByIdAndUpdate(id, createOrderDto, { new: true }).exec();
+        .findByIdAndUpdate(id, createOrderDto, { new: true }).exec();
       if (!updatedOrder) {
         return { order: null, status: HttpStatus.INTERNAL_SERVER_ERROR };
       }
@@ -34,21 +33,16 @@ export class OrderService {
       throw new HttpException('Failed to update order', HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
-
-
   }
 
   async remove(id: string): Promise<{ order: Order; status: HttpStatus }> {
     try {
-      // Validate the object ID
       if (!mongoose.isValidObjectId(id)) {
         throw new HttpException('Invalid ID', HttpStatus.BAD_REQUEST);
       }
 
-      // Delete the order
       const deletedOrder = await this.orderModel.findByIdAndDelete(id).exec();
 
-      // If order not found, throw error
       if (!deletedOrder) {
         throw new HttpException(`Order with ID ${id} not found`, HttpStatus.NOT_FOUND);
       }
@@ -66,7 +60,6 @@ export class OrderService {
       throw new HttpException('Failed to getAllByBusinessCode order', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
-  //צריך לשנות בשיביל פרטי העסק
   async findAllByBusinessCodeAndCustomerId(user: string, businessCode: string): Promise<Order[]> {
     try {
       return this.orderModel.find({ user, businessCode }).exec();

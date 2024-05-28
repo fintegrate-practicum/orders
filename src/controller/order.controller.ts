@@ -8,24 +8,28 @@ import mongoose from "mongoose";
 @Controller('orders')
 export class OrderController {
     constructor(private readonly orderService: OrderService) { }
-
     @Post()
-    async AddAnOrder(@Body() newOrder: CreateOrderDto, @Res() response): Promise<Order> {
+    async AddAnOrder(@Body() newOrder: CreateOrderDto, @Res() response): Promise<any> {
         try {
             if (newOrder.products.length === 0)
-                return response.status(HttpStatus.UNPROCESSABLE_ENTITY).send("your are not have products");
+                return response
+                    .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                    .send('your are not have products');
             const result = await this.orderService.create(newOrder);
-            return response.status(HttpStatus.CREATED).send(result);
-        }
-        catch (error) {
-            return response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({title:'Failed to create order',content:error.message});
-
+            return response.status(HttpStatus.CREATED).send({ order: result, status: HttpStatus.CREATED });
+        } catch (error) {
+            return response
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .send({
+                    title: 'Failed to create order',
+                    content: error.message,
+                });
         }
     }
 
 
     @Put(':id')
-    async UpdateOrder(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto, @Res() response): Promise<Order> {
+    async UpdateOrder(@Param('id') id: string, @Body() updateOrderDto: CreateOrderDto, @Res() response): Promise<Order> {
         try {
             if (!mongoose.isValidObjectId(id)) {
                 console.log("enter");
