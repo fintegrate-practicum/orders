@@ -6,7 +6,7 @@ import MuiNavbar from './components/MuiNavbar/MuiNavbar';
 
 function App() {
   return (
-    <div className="App">
+    <div>
             <div>      <MuiNavbar/>
 </div>
       <header className="A pp-header">

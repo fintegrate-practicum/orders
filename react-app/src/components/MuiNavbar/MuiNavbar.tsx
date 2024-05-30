@@ -1,7 +1,6 @@
 import {AppBar,Toolbar,IconButton,Typography,Stack,Button} from "@mui/material";
 import React from "react";
-//צריך לייבא כאן את הלוגו של הלקוח
-var logo= <img src="/my-logo.jpg" width={50}/>;
+
 
 export default function MuiNavbar() {
     return(
