@@ -4,6 +4,8 @@ import logo from './logo.svg';
 import './App.css';
 import { Button } from '@mui/material';
 import BaseWizard from './Stepper/BaseWizard';
+import SmallShoppingBag from './smallBag/SmallShoppingBag';
+
 
 
 function App() {
@@ -19,6 +21,9 @@ function App() {
           onClick={() => setShowWizard(!showWizard)}>
           {showWizard ? 'hide wizard' : 'show wizard'}
         </Button>
+        <a/>
+        <SmallShoppingBag/>
+        
     </div>
   );
 }
