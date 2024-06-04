@@ -23,7 +23,6 @@
     "jsx": "react-jsx",
     "module": "commonjs"
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
+
