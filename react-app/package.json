@@ -16,6 +16,7 @@
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.23",
     "amqplib": "^0.10.4",
+    "axios": "^1.7.2",
     "mailgun-js": "^0.22.0",
     "mailgun.js": "^10.2.1",
     "ts-node": "^10.9.2",
