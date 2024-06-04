@@ -8,7 +8,6 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import Logout from '@mui/icons-material/Logout';
 import { BlurOnSharp } from '@mui/icons-material';
 import { Link } from 'react-router-dom'; 
 
@@ -73,17 +72,7 @@ export default function ParentComponent() {
             },
           },
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <BlurOnSharp fontSize="small" />
-          </ListItemIcon>
-          <Link to="/Women_Page" style={{ textDecoration: 'none', color: 'inherit', margin: '2%' }}>
-            Women
-          </Link>
-        </MenuItem>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <BlurOnSharp fontSize="small" />
@@ -107,14 +96,6 @@ export default function ParentComponent() {
           </ListItemIcon>
           <Link to="/Boys_Page" style={{ textDecoration: 'none', color: 'inherit' }}>
             Boys
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          <Link to="/Others_Page" style={{ textDecoration: 'none', color: 'inherit' }}>
-            Others
           </Link>
         </MenuItem>
       </Menu>
