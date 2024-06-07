@@ -1,6 +1,4 @@
 import {AppBar,Toolbar,IconButton,Typography,Stack,Button} from "@mui/material";
-import React from "react";
-
 
 export default function MuiNavbar() {
     return(
@@ -24,4 +22,3 @@ export default function MuiNavbar() {
        </AppBar>
     )
 }
-

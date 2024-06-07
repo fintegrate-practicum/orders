@@ -1,7 +1,7 @@
 // src/components/MyComponent.tsx
 
 import React from 'react';
-import { sendEmail } from '.../src/email/mailer';
+// import { sendEmail } from '.../src/email/mailer';
 
 
 const MyComponent: React.FC = () => {
@@ -12,7 +12,7 @@ const MyComponent: React.FC = () => {
       text: 'My Email Body',
     };
 
-    sendEmail(message);
+    // sendEmail(message);
   };
 
   return (

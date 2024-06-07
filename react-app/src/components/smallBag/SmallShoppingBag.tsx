@@ -4,7 +4,6 @@ import "./smallShoppingBag.css";
 import { Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
 const bag = [
-
   {
     id: 1,
     image: '/dress.jpg',
@@ -47,11 +46,9 @@ const bag = [
     size: 28,
     amount: 1
   }
-
-
 ];
 
-const MyTable = () => {
+const SmallShoppingBag = () => {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -102,5 +99,5 @@ const MyTable = () => {
   );
 };
 
-export default MyTable;
+export default SmallShoppingBag
 

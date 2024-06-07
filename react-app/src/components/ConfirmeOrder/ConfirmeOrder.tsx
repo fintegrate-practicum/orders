@@ -4,13 +4,14 @@ interface Order {
   _id: string;
 //להוסיף עוד פרטי הזמנה הנחוצים
 }
-const ConfirmeOrder = ({ newOrder }: { newOrder: Order }) => {
+//כך מפעילים <ConfirmeOrder _id = {newOrder._id}/>
+const ConfirmeOrder: React.FC<Order> = ({_id}) => {
   return (
     <div className='contain'>
-      Order number:{newOrder._id} was successfully received.<br/>
+      Order number:{_id} was successfully received.<br/>
       A purchase confirmation email will be sent to the email registered in the system
     </div>
   );
 }
 
-export default ConfirmeOrder;
+export default ConfirmeOrder
