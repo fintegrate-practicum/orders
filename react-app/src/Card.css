@@ -1,0 +1,11 @@
+img{
+    width: 100px;
+    height: 100px;
+}
+#i{
+    height: 300px;
+    width: 100%;
+}
+#card{
+    display: inline-grid;
+}
