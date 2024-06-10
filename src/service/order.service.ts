@@ -3,15 +3,32 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Types, Model } from 'mongoose';
 import { Order } from '../entities/order.entity';
 import { CreateOrderDto } from '../dto/create-order.dto';
+import {RabbitPublisherService} from '../../../workers/workers-backend/src/rabbit-publisher/rabbit-publisher.service'
 
 @Injectable()
 export class OrderService {
-  constructor(@InjectModel(Order.name) private readonly orderModel: Model<Order>) { }
+  constructor(@InjectModel(Order.name) private readonly orderModel: Model<Order>,private readonly rabbitPublisherService: RabbitPublisherService) { }
 
   async create(createOrderDto: CreateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
     try {
       const createdOrder = new this.orderModel(createOrderDto);
+     
       const savedOrder = await createdOrder.save();
+      const message = {
+        pattern: 'message_queue',
+        data: {
+          // to: savedOrder.user.email,
+          to:"c4171208@gmail.com",
+          subject:"message about a new order",
+          html: "", 
+          type: 'email',
+          kindSubject: 'orderMessage',
+          numOrder:savedOrder.id,
+          nameBussniesCode:savedOrder.businessCode
+        },
+      };
+      
+      this.rabbitPublisherService.publishMessageToCommunication(message)
       return { order: savedOrder, status: HttpStatus.CREATED };
     } catch (error) {
       throw new HttpException('Failed to create order', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -59,3 +76,6 @@ export class OrderService {
     }
   }
 }
+
+
+
