@@ -1,5 +1,6 @@
-import { CreateUserDto } from '../dto/create-user.dto';
+// import { CreateUserDto } from '../dto/create-user.dto';
 import { OrderStatus } from '../enums/order.enum'
+import { Types } from 'mongoose';
 export class CreateOrderDto {
   // user: CreateUserDto;
   // products:product[] ;
@@ -12,6 +13,8 @@ export class CreateOrderDto {
     street: String,
     numBuild: Number
   };
-  businessCode: String;
+  businessCode: string;
+  settingManeger:number;
   date: Date;
+  id: Types.ObjectId;
 }

@@ -24,6 +24,14 @@ function App() {
         {showWizard ? 'hide wizard' : 'show wizard'}
       </Button>
     </div>
+
+import './App.css';
+import SmallShoppingBag from './smallBag/SmallShoppingBag';
+
+function App() {
+  return (
+    <SmallShoppingBag />
+
   );
 }
 
