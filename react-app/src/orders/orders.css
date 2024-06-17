@@ -1,3 +1,83 @@
-.body{
+/* 
+body{
     direction: rtl;
 }
+
+.order-details{
+    font-weight: bold;
+
+    justify-content: center;
+    align-items: center;
+    
+}
+.orders-container {
+    width: 100%;
+    margin: auto;
+}
+
+.order-list {
+    margin: 20px;
+}
+
+.MuiTableCell-root {
+    padding: 8px; 
+}
+.button{
+    display: flex;
+    gap: 10px;
+}
+
+
+
+   */
+   body {
+    direction: rtl;
+    background-color: inherit;
+}
+
+.order-details {
+    font-weight: bold;
+    text-align: center;
+}
+
+.orders-container {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+}
+
+.order-list {
+    margin: 20px;
+}
+
+.MuiTableCell-root {
+    padding: 8px;
+     /* Adjust padding as needed */
+    text-align: center; /* Center the text horizontally */
+    vertical-align: middle; /* Center the text vertically */
+}
+
+.button {
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    gap: 10px;
+    width: 200px;
+}
+
+.MuiTableCell-root.address-cell {
+    /* padding: 8px;  */
+    /* Adjust padding as needed */
+    /* text-align: center;  */
+    /* Center the text horizontally */
+    /* vertical-align: middle;  */
+    /* Center the text vertically */
+
+}
+
+.MuiTableCell-root.address-header {
+    text-align: center; /* Center the text horizontally */
+}
+
