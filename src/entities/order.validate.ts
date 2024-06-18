@@ -1,6 +1,14 @@
-import * as Joi from '@hapi/joi';
+import Joi from 'joi';
 import { OrderStatus } from 'src/enums/order.enum';
-import {Types} from 'mongoose';
+import { Types } from 'mongoose';
+
+// ולידציה מותאמת אישית ל-ObjectId
+const objectIdValidator = (value, helpers) => {
+  if (!Types.ObjectId.isValid(value)) {
+    return helpers.error('any.invalid');
+  }
+  return value;
+};
 
 export const orderValidationSchema = Joi.object({
   user: Joi.string().optional(),
@@ -10,9 +18,9 @@ export const orderValidationSchema = Joi.object({
     numBuild: Joi.number().required()
   }).required(),
   status: Joi.string().valid(...Object.values(OrderStatus)).required(),
-  date: Joi.date().iso().required() ,
+  date: Joi.date().iso().required(),
   businessCode: Joi.string().required(),
-  id: Joi.objectId().required(),
+  id: Joi.string().custom(objectIdValidator, 'ObjectId validation').required(),
   settingManeger: Joi.number().min(0).required().messages({
     'number.min': " must be positive",
     'any.required': "settingManeger is required"
