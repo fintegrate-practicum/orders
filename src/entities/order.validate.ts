@@ -2,7 +2,6 @@ import Joi from 'joi';
 import { OrderStatus } from 'src/enums/order.enum';
 import { Types } from 'mongoose';
 
-// ולידציה מותאמת אישית ל-ObjectId
 const objectIdValidator = (value, helpers) => {
   if (!Types.ObjectId.isValid(value)) {
     return helpers.error('any.invalid');
