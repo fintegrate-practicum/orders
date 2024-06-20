@@ -4,13 +4,10 @@ import { OrderService } from '../service/order.service';
 import { GeneralService } from '../service/general.service';
 import { Order } from '../entities/order.entity';
 import { Types } from 'mongoose';
-// import { RabbitPublisherService } from 'src/rabbit-publisher/rabbit-publisher.service';
 
 @Controller('orders')
 export class OrderController {
     constructor(private readonly orderService: OrderService, private readonly generalService: GeneralService
-
-    // constructor(private readonly orderService: OrderService, private readonly generalService: GeneralService, private readonly rabbitPublisherService: RabbitPublisherService,
     ) { }
     @Post()
     async AddAnOrder(@Body() newOrder: CreateOrderDto, @Res() response): Promise<any> {

@@ -3,12 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Types, Model } from 'mongoose';
 import { Order } from '../entities/order.entity';
 import { CreateOrderDto } from '../dto/create-order.dto';
-// import {RabbitPublisherService} from '../rabbit-publisher/rabbit-publisher.service'
+import {RabbitPublisherService} from '../rabbit-publisher/rabbit-publisher.service'
 
 @Injectable()
 export class OrderService {
-  // constructor(@InjectModel(Order.name) private readonly orderModel: Model<Order>,private readonly rabbitPublisherService: RabbitPublisherService) { }
-  constructor(@InjectModel(Order.name) private readonly orderModel: Model<Order>) { }
+  constructor(@InjectModel(Order.name) private readonly orderModel: Model<Order>,private readonly rabbitPublisherService: RabbitPublisherService) { }
 
   async create(createOrderDto: CreateOrderDto): Promise<{ order: Order; status: HttpStatus }> {
     try {
@@ -19,17 +18,20 @@ export class OrderService {
         pattern: 'message_queue',
         data: {
           // to: savedOrder.user.email,
-          to:"c4171208@gmail.com",
+          to:"efrat1574@gmail.com",
           subject:"message about a new order",
           html: "", 
           type: 'email',
           kindSubject: 'orderMessage',
           numOrder:savedOrder.id,
-          nameBussniesCode:savedOrder.businessCode
+          nameBussniesCode:savedOrder.businessCode,
+          date:`${savedOrder.date.getUTCDate()}/${savedOrder.date.getUTCMonth()}/${savedOrder.date.getUTCFullYear()}`
+          
         },
       };
-      
-      // this.rabbitPublisherService.publishMessageToCommunication(message)
+console.log("d",message.data);
+
+      this.rabbitPublisherService.publishMessageToCommunication(message)
       return { order: savedOrder, status: HttpStatus.CREATED };
     } catch (error) {
       throw new HttpException('Failed to create order', HttpStatus.INTERNAL_SERVER_ERROR);

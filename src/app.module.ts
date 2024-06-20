@@ -6,7 +6,6 @@ import { ManagerModule } from './module/manager.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { OrderModule } from './module/order.module';
 import { ConfigModule,ConfigService } from '@nestjs/config';
-// import { RabbitPublisherService } from './rabbit-publisher/rabbit-publisher.service';
 
 @Module({
   imports: [
