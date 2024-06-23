@@ -39,7 +39,11 @@ export class RabbitPublisherService {
         durable: false,
       });
       await this.channel.assertQueue(this.nameQueue, { durable: true });
-      await this.channel.bindQueue(this.nameQueue, this.nameExchange, 'message_type');
+      await this.channel.bindQueue(
+        this.nameQueue,
+        this.nameExchange,
+        'message_type',
+      );
     } catch (error) {
       console.error('Error initializing RabbitMQ:', error);
     }
@@ -50,7 +54,11 @@ export class RabbitPublisherService {
       const exchangeName = this.nameExchange; // Use the correct exchange name
       const messageData = JSON.stringify(message);
 
-      this.channel.publish(exchangeName, 'message_type', Buffer.from(messageData));
+      this.channel.publish(
+        exchangeName,
+        'message_type',
+        Buffer.from(messageData),
+      );
       console.log(`Message published to exchange :  ${exchangeName} `);
     } catch (error) {
       console.error(`Message not published with routing key ${error} `);
