@@ -17,6 +17,7 @@ const Product = () => {
    const allProduct= dataObject;
 
     return ( 
+        
         <>
          <h1>all product</h1>
             {allProduct.map((item) => {
