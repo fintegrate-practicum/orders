@@ -1,10 +1,11 @@
 
+
 const Product = (props) =>{
 
-    return <div className="product-container">
+    return <div className="product_container">
          <img src = {props.product.image} alt = {props.name}/>
          <h3> {props.product.name} </h3>
-         <p>  {props.product.price}  </p>
+         <p>  {props.product.price} </p>
        
         this is single product component
     </div>
