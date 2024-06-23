@@ -18,7 +18,7 @@ export class OrderService {
         pattern: 'message_queue',
         data: {
           // to: savedOrder.user.email,
-          to:"efrat1574@gmail.com",
+          to:process.env.DEVTIMEMAIL,
           subject:"message about a new order",
           html: "", 
           type: 'email',
