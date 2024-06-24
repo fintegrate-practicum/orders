@@ -147,7 +147,6 @@ const Products: React.FC = () => {
             {initialBag.map((product, index) => (
                 <Product key={index} product={product} />
             ))}
-            this is products component
         </div>
     );
 };
