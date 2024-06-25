@@ -1,13 +1,8 @@
-import React from 'react';
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import Menu from '@mui/material/Menu';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
+import React, { useState, Fragment } from 'react';
+import { Box, Avatar, Menu, Divider, IconButton, Typography, Tooltip } from '@mui/material';
+
 export default function ParentComponent() {
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -19,8 +14,17 @@ export default function ParentComponent() {
   };
 
   return (
-    <React.Fragment>
-      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', marginTop: '5%', marginLeft: '5%', padding: '2%' }}>
+    <Fragment>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          textAlign: 'center',
+          marginTop: '5%',
+          marginLeft: '5%',
+          padding: '2%',
+        }}
+      >
         <Typography sx={{ minWidth: 100 }}>Categories --</Typography>
         <Tooltip title="To select a category click here">
           <IconButton
@@ -70,6 +74,6 @@ export default function ParentComponent() {
       >
         <Divider />
       </Menu>
-    </React.Fragment>
+    </Fragment>
   );
 }
