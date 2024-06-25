@@ -17,13 +17,17 @@ export class OrderService {
   ): Promise<{ order: Order; status: HttpStatus }> {
     try {
       const createdOrder = new this.orderModel(createOrderDto);
-
+      var mailAdress: string;
+      if(process.env.DEVTIME=="TRUE")
+        mailAdress= process.env.DEVTIMEMAIL
+      else
+        mailAdress="savedOrder.user.email"
+      
       const savedOrder = await createdOrder.save();
       const message = {
         pattern: 'message_queue',
         data: {
-          // to: savedOrder.user.email,
-          to: process.env.DEVTIMEMAIL,
+          to:mailAdress,         
           subject: 'message about a new order',
           html: '',
           type: 'email',

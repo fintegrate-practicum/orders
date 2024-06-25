@@ -9,8 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env' }), // Configure .env loading
-    // MongooseModule.forRoot(process.env.MONGODB_URI),
+    ConfigModule.forRoot({ envFilePath: '.env' }), 
     UserModule,
     ManagerModule,
     OrderModule,
