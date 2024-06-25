@@ -50,6 +50,8 @@ export class OrderController {
     @Res() response,
   ): Promise<Order> {
     try {
+      // צריכם להוסיף כאן תנאי אם יש 
+      //generalService-לך הרשאה של מנהל .עובד את לא צריך לעבור דרך הבדיקה הזו הזה:
       const enabled = await this.generalService.checkingPermissions(
         id,
         order.businessCode,

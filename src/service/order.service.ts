@@ -18,10 +18,10 @@ export class OrderService {
     try {
       const createdOrder = new this.orderModel(createOrderDto);
       var mailAdress: string;
-      if(process.env.DEVTIME=="TRUE")
-        mailAdress= process.env.DEVTIMEMAIL
-      else
-        mailAdress="savedOrder.user.email"
+      if(process.env.ENV=="DEVELOPMENT")
+          mailAdress= process.env.DEVTIMEMAIL
+      // else
+      //   mailAdress=savedOrder.user.email
       
       const savedOrder = await createdOrder.save();
       const message = {
@@ -37,7 +37,7 @@ export class OrderService {
           date: `${savedOrder.date.getUTCDate()}/${savedOrder.date.getUTCMonth()}/${savedOrder.date.getUTCFullYear()}`,
         },
       };
-      console.log('d', message.data);
+      console.log('mail data', message.data);
 
       this.rabbitPublisherService.publishMessageToCommunication(message);
       return { order: savedOrder, status: HttpStatus.CREATED };
