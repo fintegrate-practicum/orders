@@ -5,7 +5,7 @@
     "semi": true,
     "experimentalTernaries": false,
     "singleQuote": true,
-    "jsxSingleQuote": false,
+    "jsxSingleQuote": true,
     "quoteProps": "as-needed",
     "trailingComma": "all",
     "singleAttributePerLine": false,
@@ -15,7 +15,7 @@
     "insertPragma": false,
     "printWidth": 80,
     "requirePragma": false,
-    "tabWidth": 0,
+    "tabWidth": 2,
     "useTabs": true,
     "embeddedLanguageFormatting": "auto"
-  }
+}
