@@ -7,7 +7,7 @@ interface ProductProps {
         name: string;
         model: string;
         description: string;
-        price: string;  // השתמשנו במחרוזת כאן
+        price: string;  // השתמשתי במחרוזת כאן
         sizes: string;
     };
 }
