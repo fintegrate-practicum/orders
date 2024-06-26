@@ -7,18 +7,10 @@ import BaseWizard from './Stepper/BaseWizard';
 
 
 function App() {
-  const [showWizard, setShowWizard] = useState(false)
 
   return (
     <div>
-      {showWizard && (<BaseWizard />)}
-
-      <Button
-          variant='contained'
-          size='large'
-          onClick={() => setShowWizard(!showWizard)}>
-          {showWizard ? 'hide wizard' : 'show wizard'}
-        </Button>
+      <BaseWizard />
     </div>
   );
 }
