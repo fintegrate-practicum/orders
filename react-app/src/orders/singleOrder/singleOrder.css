@@ -2,10 +2,49 @@
     max-width: 600px;
     margin: 2rem auto;
     padding: 2rem;
-    background-color: yellow;
 }
 
 .order-details-container .MuiTextField-root {
     margin-bottom: 1rem;
-    background-color: yellow;
+}
+
+body {
+    direction: rtl;
+    background-color: inherit;
+}
+
+.singleOrder-container {
+    margin: auto;
+    gap: 20px;
+    margin: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.form-container input {
+    padding: 30px;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 30px;
+}
+
+
+.form-container {
+    
+    max-width: 600px; 
+
+}
+@media (max-width: 768px) {
+    .order-details-container {
+        max-width: 90%;
+    }
 }

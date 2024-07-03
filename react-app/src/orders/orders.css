@@ -1,18 +1,30 @@
-/* 
-body{
+body {
     direction: rtl;
+    background-color: inherit;
+    width: 100vw;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.order-details{
-    font-weight: bold;
+.order-details {
+    font-weight: bolder;
+    text-align: center;
+}
 
+
+.orders-container {
+    width: 100vw;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     justify-content: center;
     align-items: center;
-    
-}
-.orders-container {
-    width: 100%;
-    margin: auto;
+    overflow-x: auto; 
+   
+    max-width: 1500px;
 }
 
 .order-list {
@@ -21,63 +33,31 @@ body{
 
 .MuiTableCell-root {
     padding: 8px; 
-}
-.button{
-    display: flex;
-    gap: 10px;
-}
-
-
-
-   */
-   body {
-    direction: rtl;
-    background-color: inherit;
-}
-
-.order-details {
-    font-weight: bold;
-    text-align: center;
-}
-
-.orders-container {
-    width: 100%;
-    margin: auto;
-    display: flex;
+     
     
-    justify-content: center; /* Center the content horizontally */
-    align-items: center; /* Center the content vertically */
-}
-
-.order-list {
-    margin: 20px;
-}
-
-.MuiTableCell-root {
-    padding: 8px;
-     /* Adjust padding as needed */
-    text-align: center; /* Center the text horizontally */
-    vertical-align: middle; /* Center the text vertically */
+    text-align: center;
+    vertical-align: middle;
+    word-wrap: break-word;
+    max-width: 300px;
+  
 }
 
 .button {
     display: flex;
-    justify-content: center; /* Center buttons horizontally */
+    justify-content: center;
     gap: 10px;
-    width: 200px;
 }
 
 .MuiTableCell-root.address-cell {
-    /* padding: 8px;  */
-    /* Adjust padding as needed */
-    /* text-align: center;  */
-    /* Center the text horizontally */
-    /* vertical-align: middle;  */
-    /* Center the text vertically */
-
+  
 }
 
 .MuiTableCell-root.address-header {
-    text-align: center; /* Center the text horizontally */
+    text-align: center;
 }
 
+@media (max-width: 1000px) {
+    .orders-container {
+        width: 95%; 
+    }
+}

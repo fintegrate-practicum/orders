@@ -1,145 +1,157 @@
-// src/orders/singleOrder/SingleOrder.tsx
-import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import TextField from '@mui/material/TextField';
+
+
+
+import React, { useEffect, useState, FormEvent } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useGetAllOrdersQuery, useUpdateOrderMutation } from '../ordersApiSlice';
+import { Order, OrderStatus } from '../types';
+import {
+    Box,
+    TextField,
+    Button,
+    Select,
+    MenuItem,
+    FormControl,
+    InputLabel,
+    Typography,
+} from '@mui/material';
 import './singleOrder.css';
 
-
-
-
-
-
-interface User {
-    name: string;
-    id: number;
-}
-
-interface Address {
-    city: string;
-    street: string;
-    numBulding: number;
-}
-
-interface Order {
-    numOrder: number;
-    user: User;
-    prod: string[];
-    status: boolean;
-    address: Address;
-    date: Date;
-}
-
-// Dummy data for demonstration
-const ordersData: Order[] = [
-    {
-        numOrder: 1,
-        user: { name: 'John Doe', id: 123 },
-        prod: ['Product1', 'Product2'],
-        status: true,
-        address: { city: 'New York', street: '5th Avenue', numBulding: 10 },
-        date: new Date(),
-    },
-    // Add more orders as needed
-];
-
 const SingleOrder: React.FC = () => {
-
-
-
-    
     const { id } = useParams<{ id: string }>();
-    const [updatedOrder, setUpdatedOrder] = useState<Order | null>(null);
+    const { data: orders, isLoading, isError, error, refetch } = useGetAllOrdersQuery();
+    const [updateOrder, { isSuccess: isUpdateSuccess }] = useUpdateOrderMutation();
+    const navigate = useNavigate();
+    const [order, setOrder] = useState<Order | null>(null);
 
     useEffect(() => {
-        const orderData = ordersData.find(order => order.numOrder === parseInt(id || '', 10));
-        if (orderData) {
-            setUpdatedOrder(orderData);
+        if (orders) {
+            const selectedOrder = orders.find(order => order.id === id);
+            if (selectedOrder) {
+                setOrder(selectedOrder);
+            }
         }
-    }, [id]);
+    }, [orders, id]);
 
-    const handleInputChange = (field: keyof Order, value: any) => {
-        setUpdatedOrder(prevState => {
-            if (!prevState) return prevState;
-            return {
-                ...prevState,
-                [field]: value
-            };
-        });
+    useEffect(() => {
+        if (isUpdateSuccess) {
+            navigate("/");
+        }
+    }, [isUpdateSuccess, navigate]);
 
+    const formSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const data = new FormData(e.target as HTMLFormElement);
+        const orderData = Object.fromEntries(data.entries());
+
+        const updatedOrder = {
+            id: orderData.id as string,
+            user: orderData.user as string,
+            products: (orderData.products as string).split(',').map(item => item.trim()),
+            status: orderData.status as unknown as OrderStatus,
+            destinationAddress: {
+                city: orderData.city as string,
+                street: orderData.street as string,
+                numBuild: parseInt(orderData.numBuild as string),
+            },
+        };
+
+        await updateOrder(updatedOrder);
+        refetch(); // רענון רשימת ההזמנות אחרי העדכון
     };
 
-    const [value, setValue] = useState<string>(''); // Specify the type for value
+    if (isLoading) return <h1>Loading...</h1>;
+    if (isError) return <h1>{JSON.stringify(error)}</h1>;
+    if (!order) return <h1>Order not found</h1>;
 
-    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => { // Specify the type for event
-      setValue(event.target.value as string); // Type assertion to string
-    };
     return (
-        <div>
-            <TextField
-                label="User ID"
-                value={updatedOrder?.user.id ?? ''}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('user', { ...updatedOrder?.user, id: parseInt(e.target.value, 10) })}
-                fullWidth
-                margin="normal"
-            />
-            <TextField label="ffff"
-            />
-            <TextField
-                label="Products"
-                value={updatedOrder?.prod.join(', ') ?? ''}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('prod', e.target.value.split(', '))}
-                fullWidth
-                margin="normal"
-            />
-            <TextField
-                label="City"
-                value={updatedOrder?.address.city ?? ''}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('address', { ...updatedOrder?.address, city: e.target.value })}
-                fullWidth
-                margin="normal"
-            />
-            <TextField
-                label="Street"
-                value={updatedOrder?.address.street ?? ''}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('address', { ...updatedOrder?.address, street: e.target.value })}
-                fullWidth
-                margin="normal"
-            />
-            <TextField
-                label="Building Number"
-                value={updatedOrder?.address.numBulding ?? ''}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('address', { ...updatedOrder?.address, numBulding: parseInt(e.target.value, 10) })}
-                fullWidth
-                margin="normal"
-            />
-            <TextField
-                label="Date"
-                value={updatedOrder?.date.toLocaleDateString() ?? ''}
-                fullWidth
-                margin="normal"
-                disabled
-            />
-
-{/* <InputLabel id="simple-select-label">Choose an option</InputLabel>
-      <Select
-        labelId="simple-select-label"
-        id="simple-select"
-        value={value}
-       // onChange={handleChange}
-       onChange={handleChange}
-      >
-        <MenuItem value="option1">Option 1</MenuItem>
-        <MenuItem value="option2">Option 2</MenuItem>
-        <MenuItem value="option3">Option 3</MenuItem>
-      </Select> */}
-
-
-            
+        <div className='singleOrder-container'>
+            <div className='order-container'>
+                <Typography variant="h4">Update Order</Typography>
+                <form onSubmit={formSubmit} className='form-container'>
+                    <input name="id" defaultValue={order.id} type="hidden" />
+                    <Box>
+                        <TextField
+                            name="user"
+                            label="User"
+                            defaultValue={order.user}
+                            fullWidth
+                            required
+                        />
+                    </Box>
+                    <Box>
+                        <TextField
+                            name="products"
+                            label="Products"
+                            defaultValue={order.products.join(', ')}
+                            fullWidth
+                            required
+                        />
+                    </Box>
+                    <Box>
+                        <FormControl fullWidth required>
+                            <InputLabel>Status</InputLabel>
+                            <Select
+                                name="status"
+                                defaultValue={order.status}
+                            >
+                                {Object.values(OrderStatus).map(status => (
+                                    <MenuItem key={status} value={status}>
+                                        {status}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Box>
+                    <Box>
+                        <TextField
+                            name="city"
+                            label="City"
+                            defaultValue={order.destinationAddress.city}
+                            fullWidth
+                            required
+                        />
+                    </Box>
+                    <Box>
+                        <TextField
+                            name="street"
+                            label="Street"
+                            defaultValue={order.destinationAddress.street}
+                            fullWidth
+                            required
+                        />
+                    </Box>
+                    <Box>
+                        <TextField
+                            name="numBuild"
+                            label="Building Number"
+                            defaultValue={order.destinationAddress.numBuild}
+                            fullWidth
+                            required
+                            type="number"
+                        />
+                    </Box>
+                    <Box mt={2}>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            sx={{
+                                backgroundColor: "rgb(0,128,128)",
+                                border: "2px solid transparent",
+                                "&:hover": {
+                                    backgroundColor: "rgb(0,128,128)",
+                                },
+                            }}
+                        >
+                            Update Order
+                        </Button>
+                    </Box>
+                </form>
+            </div>
         </div>
     );
 };
 
 export default SingleOrder;
-

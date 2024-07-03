@@ -3,161 +3,169 @@
 
 
 
-
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import "./orders.css";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete'
-import {AppBar,Toolbar,IconButton,Typography,Stack,Button} from "@mui/material";
-import UpdateIcon from "@mui/icons-material/Update"
-import SettingsIcon from "@mui/icons-material/Settings"
-//import Link from "@mui/material"
-import { Link } from 'react-router-dom';
-import ButtonGroup from '@mui/material/ButtonGroup'
-// import Button from '@mui/material/Button
-const Orders = () => {
-    const allOrders = [
-        {
-            numOrder: 123, 
-            user: { name: "moshe", id: 123 }, 
-            prod: ["עט", "pencil"], 
-            status: false, 
-            address: { city: "beney brak", street: "akive", numBulding: 10 },
-            date: new Date()
-        },
-        {
-            numOrder: 124, 
-            user: { name: "moshe", id: 124 }, 
-            prod: ["pen", "pencil"], 
-            status: false, 
-            address: { city: "beney brak", street: "akive", numBulding: 10 },
-            date: new Date()
-        },
-        {
-            numOrder: 125, 
-            user: { name: "moshe", id: 125 }, 
-            prod: ["pen", "pencil"], 
-            status: false, 
-            address: { city: "beney brak", street: "akive", numBulding: 10 },
-            date: new Date()
-        }
-    ];
+import {useGetAllOrdersQuery, useGetByUserQuery ,useUpdateOrderMutation,useDeleteOrderMutation} from './ordersApiSlice'; // Assuming you have a query hook for getByUser
 
+import { Link } from 'react-router-dom';
+import { Order } from "./types"
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Button,
+    ButtonGroup,
+    Typography
+} from '@mui/material';
+import './orders.css';
+
+const OrderStatusMap = {
+    0: 'ACCEPTED',
+    1: 'HANDLING',
+    2: 'READY',
+    3: 'SENT',
+};
+type OrdersProps = {
+    kind: 'admin' | 'user';
+};
+const Orders: React.FC<OrdersProps> = ({ kind }) => {
+    const { data: allOrders, error: allOrdersError, isLoading: allOrdersLoading, refetch: refetchAllOrders } = useGetAllOrdersQuery();
+    
+    // Assuming useGetByUserQuery requires parameters like businessCode and user
+    const { data: userOrders, error: userOrdersError, isLoading: userOrdersLoading, refetch: refetchUserOrders } = useGetByUserQuery({  user: 'defaultUser' });
+    const [updateOrder] = useUpdateOrderMutation();
+    const [deleteOrder, { isSuccess: isDeleteSuccess }] = useDeleteOrderMutation()
+    const orders = kind === 'admin' ? allOrders : userOrders;
+    const refetch = kind === 'admin' ? refetchAllOrders : refetchUserOrders;
+
+   
+    const handleUpdateStatus = async (id: string) => {
+        const orderToUpdate = orders?.find(order => order.id === id);
+        if (orderToUpdate) {
+            const newStatus = (orderToUpdate.status + 1) % 4; // Cycle through statuses
+            await updateOrder({
+                id,
+                status: newStatus,
+            });
+            await refetch(); // Ensure refetch completes
+        }
+    };
+
+
+    const deleteClick = (order: Order) => {
+     
+         if (window.confirm("are you sure you want to delete this order?")) {
+            deleteOrder({
+                "businessCode": order.businessCode,
+                "id": order.id
+            })
+            refetch()
+        }
+    
+        console.log(isDeleteSuccess);
+        
+    }
+
+    
+
+
+
+
+    if (allOrdersLoading || userOrdersLoading) return <div>Loading...</div>;
+    if (allOrdersError || userOrdersError) return <div>Error: {(allOrdersError || userOrdersError)?.toString()}</div>;
     return (
         <div className='order-list'>
+            <h2 className='orders'>all orders </h2>
+            
             <TableContainer component={Paper} className='orders-container'>
                 <Table>
                     <TableHead>
                         <TableRow className='order-details'>
                             <TableCell>מס' הזמנה</TableCell>
-                            <TableCell>שם</TableCell>
-                            <TableCell>מספר זהות</TableCell>
-                            <TableCell>מוצרים</TableCell>
                             <TableCell>סטטוס</TableCell>
-                            <TableCell className="address-header">כתובת</TableCell>
-
                             <TableCell>תאריך</TableCell>
+                            <TableCell>פעולות</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {allOrders.map((order) => (
-                            <TableRow key={order.numOrder}>
-                                <TableCell>{order.numOrder}</TableCell>
-                                <TableCell>{order.user.name}</TableCell>
-                                <TableCell>{order.user.id}</TableCell>
-                                <TableCell className='product-name'>
-                                    <ul>
-                                        {order.prod.map((product, index) => (
-                                            <li key={index}>{product}</li>
-                                        ))}
-                                    </ul>
-                                </TableCell>
-                                <TableCell>{order.status ? "Completed" : "Pending"}</TableCell>
-                         
-                                <TableCell className="address-cell">
-    {order.address.city}, {order.address.street}, Building {order.address.numBulding}
-</TableCell>
-
-                                <TableCell>{order.date.toLocaleDateString()}</TableCell>
+                        {orders?.map((order) => (
+                            <TableRow key={order.id}>
+                                <TableCell>{order.id}</TableCell>
+                                <TableCell>{OrderStatusMap[order.status]}</TableCell>
+                                <TableCell>{new Date(order.date).toLocaleDateString()}</TableCell>
                                 <TableCell>
-                             
-                                <ButtonGroup className='button'>
-       
+                                    <ButtonGroup className='button'>
+                                        <Link to={`/order/${order.id}`}>
+                                            <Button
+                                                variant="contained"
+                                                sx={{
+                                                    width: "100%",
+                                                    mt: 2,
+                                                    backgroundColor: "rgb(0,128,128)",
+                                                    border: "2px solid transparent",
+                                                    "&:hover": {
+                                                        backgroundColor: "rgb(0,128,128)",
+                                                    },
+                                                    height: "40px",
+                                                    minWidth: "60px"
+                                                }}
+                                            >
+                                                צפיה
+                                            </Button>
+                                        </Link>
+                                        {kind === 'admin' && (
+                                        <Button
+                                            onClick={() => handleUpdateStatus(order.id)}
+                                            variant="contained"
+                                            sx={{
+                                                width: "100%",
+                                                mt: 2,
+                                                backgroundColor: "rgb(0,128,128)",
+                                                border: "2px solid transparent",
+                                                "&:hover": {
+                                                    backgroundColor: "rgb(0,132,130)",
+                                                    border: "2px solid rgb(0,128,128)"
+                                                },
+                                                height: "40px",
+                                                minWidth: "60px",
+                                            }}
+                                        >
+                                            עדכון סטטוס
+                                        </Button>)}
+                                        <Button
+                                            onClick={() => { deleteClick(order) }
 
-                                <Link to="/order/${order.numOrder}">
-
-          <Button
-  type="submit"
-  variant="contained"
-  sx={{
-    width: "100%",
-    mt: 2,
-
-    
-backgroundColor:"rgb(0,128,128)",
-    border: "2px solid transparent", // Add transparent border by default
-    "&:hover": {
-      backgroundColor: "white",
-      color: "rgb(0,128,128)",
-    //   border: "2px solid #CB1021", // Change border color on hover
-      border: "2px solid rgb(0,128,128)"
-    },
-    height: "40px",
-    
-  }}
-  
->
-  צפיה
-</Button>
-</Link>
-
-<Button
-  type="submit"
-  variant="contained"
-  sx={{
-    width: "100%",
-    mt: 2,
-    backgroundColor: "#CB1021",
-     border: "2px solid transparent", // Add transparent border by default
-    "&:hover": {
-      backgroundColor: "white",
-      color: "#CB1021",
-      border: "2px solid #CB1021", // Change border color on hover
-    },
-    height: "40px",
-   // padding: "5px 10px",
-    minWidth:"60px",
-  }}
-
-
-
-  
->
-  מחיקה    
-</Button>
-
-
-
-
-
-
-
-          </ButtonGroup>
-        
-                        
+                                            }
+                                            variant="contained"
+                                            sx={{
+                                                width: "100%",
+                                                mt: 2,
+                                                backgroundColor: "#CB1021",
+                                                border: "2px solid transparent",
+                                                "&:hover": {
+                                                    backgroundColor: "#CB1021",
+                                                },
+                                                height: "40px",
+                                                minWidth: "60px",
+                                            }}
+                                        >
+                                            ביטול הזמנה
+                                        </Button>
+                                    </ButtonGroup>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+
         </div>
     );
 }
 
 export default Orders;
-
-
 
 
