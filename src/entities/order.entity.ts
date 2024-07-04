@@ -1,7 +1,7 @@
 // import { CreateUserDto } from '../dto/create-user.dto'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, SchemaTypes, Types} from 'mongoose';
-import { OrderStatus } from '../enums/order.enum'
+import { Document, SchemaTypes, Types } from 'mongoose';
+import { OrderStatus } from '../enums/order.enum';
 
 export type OrderDocument = Order & Document;
 @Schema({
@@ -22,7 +22,6 @@ export class Order {
   @Prop({ required: true })
   products: String[];
 
-
   //מטיפוס מוצר שאמור להגיע מצוות האדום...
   // @Prop({ required: true })
   // products: Product[];
@@ -33,7 +32,7 @@ export class Order {
       city: String,
       street: String,
       numBuild: Number,
-    }
+    },
   })
   destinationAddress: { city: String; street: String; numBuild: Number };
 
@@ -45,12 +44,12 @@ export class Order {
   //קוד בית העסק אמור להישלף מפרטי המנהל
   @Prop({ required: true })
   businessCode: string;
-  
+
   @Prop({ type: SchemaTypes.ObjectId, required: true, auto: true })
   id: Types.ObjectId;
 
   @Prop({ required: true })
-  settingManeger:number;
+  settingManeger: number;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
