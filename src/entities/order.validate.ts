@@ -11,40 +11,40 @@ const objectIdValidator = (value, helpers) => {
 
 export const orderValidationSchema = Joi.object({
   user: Joi.string().min(3).max(20).required().messages({  
-      'string.min': "name of user must be between at list 3 letters",
-      'string.max': "name of user must be maximum 20 letters",
-      'any.required': "user is required"
+      'string.min': "Username must contain at least 3 letters",
+      'string.max': "The username must contain a maximum of 20 letters",
+      'any.required': "Username is a mandatory field"
   }),
   type: Joi.object({
     city: Joi.string().min(3).max(20).required().messages({
-    'string.min':"name of city must to be at list 3 letters",
-    'string.max':"name of city must to be maximum 20 letters",
-    'any.required':"city is required"
+    'string.min':"City name must contain at least 3 letters",
+    'string.max':"A city name must contain at most 20 letters",
+    'any.required':"The name of a city is a mandatory field"
     }),
     street: Joi.string().min(3).max(15).required().messages({
-      'string.min': "name of street must be at list 3 letters",
-      'string.max': "name of street must be maximum 15 letters",
-      'any.required': "street is required"
+      'string.min': "A street name must contain at least 3 letters",
+      'string.max': "A street name must contain at most 20 letters",
+      'any.required': "Street name is a mandatory field"
     }),
     numBuild: Joi.number().min(1).max(3).required().messages({
-      'string.min': "numBuild must be between at list 1 letters",
-      'string.max': "numBuild must be between maximum 3 letters",
+      'string.min': "Building number must contain at least number 1",
+      'string.max': "A building number must contain at most 3 letters",
       'any.required': "numBuild is required"
     })
   }).required(),
   status: Joi.string().valid(...Object.values(OrderStatus)).required(),
   date: Joi.date().iso().min(1).required().messages({
-    'date.min': "min date must be positive",
-    'any.required': "date is required"
+    'date.min': "Date must be positive",
+    'any.required': "Date is a mandatory field"
   }),
   businessCode: Joi.string().min(1).max(20).required().messages({
-    'string.min': "businessCode must be between at list 1 letters",
-    'string.max': "businessCode must be between maximum 3 letters",
-    'any.required': "businessCode is required"
+    'string.min': "Business code must contain at least 1 letter",
+    'string.max': "Business code must contain at most 3 letters",
+    'any.required': "Business code is a mandatory field"
   }),
   id: Joi.string().custom(objectIdValidator, 'ObjectId validation').required(),
   settingManeger: Joi.number().min(1).required().messages({
-    'number.min': " must be positive",
-    'any.required': "settingManeger is required"
+    'number.min': "settingManeger must be positive",
+    'any.required': "settingManeger is a mandatory field"
   }),
 });
