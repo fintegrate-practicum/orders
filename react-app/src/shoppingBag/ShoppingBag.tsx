@@ -14,37 +14,8 @@ interface BagItem {
   amount: number;
 }
 
-const initialBag: BagItem[] = [
-  {
-    image: '/dress.jpg',
-    name: 'שמלת בנות חגיגית',
-    model: 'blue flowers',
-    description: 'bla bla...',
-    price: 125.9,
-    size: 4,
-    amount: 1,
-  },
-  {
-    image: '/shirt.jpg',
-    name: 'boys shirt',
-    model: 'blue flowers',
-    description: 'bla bla...',
-    price: 75,
-    size: 6,
-    amount: 2,
-  },
-  {
-    image: '/snickers.jpg',
-    name: 'snickers',
-    model: 'red',
-    description: 'bla bla...',
-    price: 89.9,
-    size: 28,
-    amount: 1,
-  },
-];
 
-const ShoppingBag: React.FC = () => {
+const ShoppingBag: React.FC<{ initialBag: BagItem[] }> = ({ initialBag }) => {
   const [bag, setBag] = useState<BagItem[]>(initialBag);
   const [total, setTotal] = useState<number>(0);
 

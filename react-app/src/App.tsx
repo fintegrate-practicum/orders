@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import SmallShoppingBag from './smallBag/SmallShoppingBag';
 import ConfirmeOrder from './ConfirmeOrder';
-import ShoppingBag from './shoppingBag/shoppingBag';
+import ShoppingBag from './shoppingBag/ShoppingBag';
 
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
     {/* זה אמור להיות כתוב מתוך קומפננטת תשלום-לא כאן */}
     {/* <ConfirmeOrder newOrder={newOrder} /> */}
     {/* <SmallShoppingBag /> */}
-    <ShoppingBag />
+    <ShoppingBag initialBag={[]}/>
     </>
   );
 }
