@@ -8,7 +8,7 @@ describe('GeneralService', () => {
 
   beforeEach(async () => {
     orderServiceMock = {
-      findAllByBusinessCode: jest.fn()
+      findAllByBusinessCode: jest.fn(),
     };
 
     const module: TestingModule = await Test.createTestingModule({

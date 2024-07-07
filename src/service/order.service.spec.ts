@@ -9,11 +9,11 @@ describe('OrderService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        OrderService
-        , {
+        OrderService,
+        {
           provide: getModelToken(Order.name),
           useValue: Order,
-        }
+        },
       ],
     }).compile();
 
