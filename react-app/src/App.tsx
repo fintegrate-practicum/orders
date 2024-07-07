@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import SmallShoppingBag from './smallBag/SmallShoppingBag';
 import ConfirmeOrder from './ConfirmeOrder';
+import ShoppingBag from './shoppingBag/ShoppingBag';
+
 import BaseWizard from './Stepper/BaseWizard';
 
 function App() {
@@ -13,8 +15,9 @@ function App() {
     <>
     <BaseWizard />
     {/* זה אמור להיות כתוב מתוך קומפננטת תשלום-לא כאן */}
-    <ConfirmeOrder newOrder={newOrder} />
-    <SmallShoppingBag />
+    {/* <ConfirmeOrder newOrder={newOrder} /> */}
+    {/* <SmallShoppingBag /> */}
+    <ShoppingBag initialBag={[]}/>
     </>
   );
 }
