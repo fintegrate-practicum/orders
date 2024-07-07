@@ -1,6 +1,6 @@
 export enum OrderStatus {
-    ACCEPTED,
-    HANDLING,
-    READY,
-    SENT
+  ACCEPTED,
+  HANDLING,
+  READY,
+  SENT,
 }
