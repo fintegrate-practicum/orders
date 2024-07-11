@@ -7,8 +7,7 @@ export class AppService {
   getHello(): string {
     console.log('ty');
     console.log('ty');
-const y=0;
-const y=o;
+
     return 'Hello World!';
   }
 }
