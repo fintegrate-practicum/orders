@@ -6,8 +6,8 @@ async function bootstrap() {
 
   // לבדוק שזה עובד!!-הוספת הגדרת !!CORS לכל הדומיינים (למטרות פיתוח בלבד)
   app.enableCors();
-  const d = 0;  const d = 0;
-
+בםמדא ט = 0ף
+בםמדא ט= 9ף
   await app.listen(8787);
   console.log('Server is running on http://localhost:8787');
 }
