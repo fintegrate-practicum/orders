@@ -6,6 +6,7 @@ export class AppService {
 
   getHello(): string {
     console.log('ty');
+    console.log('ty');
 
     return 'Hello World!';
   }
