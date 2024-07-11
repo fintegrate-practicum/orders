@@ -11,4 +11,10 @@ export class AppController {
     
     return this.appService.getHello();
   }
+  @Get()
+  getBye(): string {
+    console.log("p");
+    
+    return this.appService.getHello();
+  }
 }
