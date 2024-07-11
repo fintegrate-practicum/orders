@@ -11,5 +11,6 @@ async function bootstrap() {
 
   await app.listen(8787);
   console.log('Server is running on http://localhost:8787');
+  console.log('Server is fgf on http://localhost:8787');
 }
 bootstrap();
