@@ -7,14 +7,15 @@ export class AppController {
 
   @Get()
   getHello(): string {
-    console.log("p");
-    
+    console.log('p');
+
     return this.appService.getHello();
   }
   @Get()
   getBye(): string {
-    console.log("p");
-    
+    console.log('p');
+    console.log('p');
+
     return this.appService.getHello();
   }
 }
