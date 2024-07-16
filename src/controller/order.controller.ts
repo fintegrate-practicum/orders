@@ -30,10 +30,10 @@ export class OrderController {
     @Put(':id')
     async UpdateOrder(@Param('id') id: Types.ObjectId, @Body() order: CreateOrderDto, @Res() response): Promise<Order> {
         try {
-            const enabled = await this.generalService.checkingPermissions(id, order.businessCode);
-            if (!enabled) {
-                return response.status(HttpStatus.FORBIDDEN).send('Not authorized');
-            }
+    //        const enabled = await this.generalService.checkingPermissions(id, order.businessCode);
+     //       if (!enabled) {
+   //             return response.status(HttpStatus.FORBIDDEN).send('Not authorized');
+ //           }
             const updatedOrder = await this.orderService.update(id, order);
             return response.status(HttpStatus.OK).send(updatedOrder);
         }

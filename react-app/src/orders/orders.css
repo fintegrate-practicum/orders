@@ -61,3 +61,32 @@ body {
         width: 95%; 
     }
 }
+
+.order-list {
+    padding: 16px;
+    max-width: 100%;
+    overflow: auto;
+}
+
+.order-list .MuiTable-root {
+    border-radius: 8px;
+}
+
+.order-list .MuiTableCell-root {
+    color: #283593;
+    padding: 16px;
+}
+
+.order-list .MuiButtonGroup-root {
+    gap: 8px;
+}
+
+.order-list .MuiIconButton-root {
+    padding: 8px;
+}
+
+.order-list .MuiTooltip-tooltip {
+    background-color: #283593;
+    color: #ffffff;
+}
+

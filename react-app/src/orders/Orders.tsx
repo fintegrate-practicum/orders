@@ -78,8 +78,8 @@ const Orders: React.FC<OrdersProps> = ({ kind }) => {
     if (allOrdersError || userOrdersError) return <div>Error: {(allOrdersError || userOrdersError)?.toString()}</div>;
     return (
         <div className='order-list'>
-            <h2 className='orders'>all orders </h2>
-            
+          
+            <Typography variant='h2' className='orders'>All Orders</Typography>
             <TableContainer component={Paper} className='orders-container'>
                 <Table>
                     <TableHead>
