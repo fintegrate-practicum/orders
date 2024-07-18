@@ -9,7 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: '.env' }), 
+    ConfigModule.forRoot({ envFilePath: '.env' }),
     UserModule,
     ManagerModule,
     OrderModule,
