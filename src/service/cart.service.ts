@@ -16,11 +16,6 @@ export class CartService {
     const carts = await this.cartModel
       .find({ buissnes_code: businessCode, user_id: userId })
       .exec();
-    if (!carts || carts.length === 0) {
-      throw new NotFoundException(
-        `No carts found for businessCode ${businessCode} and user_id ${userId}`,
-      );
-    }
     return carts;
   }
 
