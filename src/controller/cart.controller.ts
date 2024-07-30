@@ -26,7 +26,7 @@ export class CartController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get(':business_code/user_id')
+  @Get(':business_code/:user_id')
   async findByBusinessCodeAndUserId(
     @Param('business_code') businessCode: string,
     @Param('user_id') userId: string,
