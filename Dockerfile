@@ -10,13 +10,11 @@ ENV SSL_CERT_FILE=/etc/ca-bundle.crt
 
 WORKDIR /app
 
-
 COPY package*.json ./
-
 
 RUN npm install
 
-COPY . .
+COPY . . 
 
 EXPOSE 4000
 
