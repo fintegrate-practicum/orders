@@ -5,6 +5,9 @@ export type CartDocument = Cart & Document;
 
 @Schema()
 export class Cart {
+  @Prop({ type: SchemaTypes.ObjectId, required: true, auto: true })
+  id: Types.ObjectId;
+
   @Prop({ required: true })
   user_id: string;
 
