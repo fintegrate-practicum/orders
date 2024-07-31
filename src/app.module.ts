@@ -7,9 +7,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { OrderModule } from './module/order.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CartModule } from './module/cart.module';
+import { AuthzModule } from 'fintegrate-auth'
+
 
 @Module({
   imports: [
+    AuthzModule,
     ConfigModule.forRoot({ envFilePath: '.env' }),
 
     CartModule,
