@@ -8,13 +8,13 @@ import { OrderModule } from './module/order.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CartModule } from './module/cart.module';
 import { AuthzModule } from 'fintegrate-auth'
-
+import { LoggerModule } from 'logger/logger.module';
 
 @Module({
   imports: [
     AuthzModule,
     ConfigModule.forRoot({ envFilePath: '.env' }),
-
+    LoggerModule,
     CartModule,
     UserModule,
     ManagerModule,
