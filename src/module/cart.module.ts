@@ -1,3 +1,4 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CartController } from 'src/controller/cart.controller';
@@ -7,6 +8,7 @@ import { CartService } from 'src/service/cart.service';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Cart.name, schema: CartSchema }]),
+    HttpModule,
   ],
   controllers: [CartController],
   providers: [CartService],
