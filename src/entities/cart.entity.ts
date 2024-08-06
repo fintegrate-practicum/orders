@@ -5,9 +5,6 @@ export type CartDocument = Cart & Document;
 
 @Schema()
 export class Cart {
-  @Prop({ type: SchemaTypes.ObjectId, required: true, auto: true })
-  id: Types.ObjectId;
-
   @Prop({ required: true })
   user_id: string;
 
@@ -22,3 +19,19 @@ export class Cart {
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);
+
+// Add a virtual field 'id'
+CartSchema.virtual('id').get(function (
+  this: Document & { _id: Types.ObjectId },
+) {
+  return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialized.
+CartSchema.set('toJSON', {
+  virtuals: true,
+});
+
+CartSchema.set('toObject', {
+  virtuals: true,
+});
