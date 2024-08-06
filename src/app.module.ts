@@ -7,8 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { OrderModule } from './module/order.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CartModule } from './module/cart.module';
-import { AuthzModule } from 'fintegrate-auth'
-
+import { AuthzModule } from 'fintegrate-auth';
 
 @Module({
   imports: [
@@ -22,7 +21,7 @@ import { AuthzModule } from 'fintegrate-auth'
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (config: ConfigService) => ({
-        uri: process.env.MONGODB_URI,
+        uri: process.env.MONGO_URI,
       }),
       inject: [ConfigService],
     }),
