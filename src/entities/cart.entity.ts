@@ -20,14 +20,12 @@ export class Cart {
 
 export const CartSchema = SchemaFactory.createForClass(Cart);
 
-// Add a virtual field 'id'
 CartSchema.virtual('id').get(function (
   this: Document & { _id: Types.ObjectId },
 ) {
   return this._id.toHexString();
 });
 
-// Ensure virtual fields are serialized.
 CartSchema.set('toJSON', {
   virtuals: true,
 });
