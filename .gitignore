@@ -3,7 +3,7 @@
 /node_modules
 /build
 tsconfig.build.tsbuildinfo
-
+package-locl.json
 # Logs
 logs
 *.log
