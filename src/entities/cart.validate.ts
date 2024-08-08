@@ -1,7 +1,6 @@
 import * as Joi from 'joi';
 
 export const cartValidationSchema = Joi.object({
-  id: Joi.string().optional(),
   user_id: Joi.string().required().messages({
     'any.required': 'User ID is a mandatory field',
   }),
