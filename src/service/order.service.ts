@@ -19,7 +19,7 @@ export class OrderService {
       const createdOrder = new this.orderModel(createOrderDto);
       var mailAdress: string;
       if(process.env.ENV=="DEVELOPMENT")
-          mailAdress= process.env.MAILGUN_EMAIL
+          mailAdress= process.env.SENDGRID_FROM_EMAIL;
       // else
       //   mailAdress=savedOrder.user.email
       

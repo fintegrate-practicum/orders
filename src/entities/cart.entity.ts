@@ -19,3 +19,17 @@ export class Cart {
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);
+
+CartSchema.virtual('id').get(function (
+  this: Document & { _id: Types.ObjectId },
+) {
+  return this._id.toHexString();
+});
+
+CartSchema.set('toJSON', {
+  virtuals: true,
+});
+
+CartSchema.set('toObject', {
+  virtuals: true,
+});
