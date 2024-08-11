@@ -1,6 +1,6 @@
 // import { CreateUserDto } from '../dto/create-user.dto'
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, SchemaTypes, Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { OrderStatus } from '../enums/order.enum';
 
 export type OrderDocument = Order & Document;
@@ -13,14 +13,14 @@ export type OrderDocument = Order & Document;
 })
 export class Order {
   @Prop({ required: true })
-  user: String;
+  user: string;
 
   //מטיפוס משתמש שאמור להגיע מצוות משתמשים...
   // @Prop({ required: true })
   // user: CreateUserDto;
 
   @Prop({ required: true })
-  products: String[];
+  products: string[];
 
   //מטיפוס מוצר שאמור להגיע מצוות האדום...
   // @Prop({ required: true })
@@ -34,7 +34,7 @@ export class Order {
       numBuild: Number,
     },
   })
-  destinationAddress: { city: String; street: String; numBuild: Number };
+  destinationAddress: { city: string; street: string; numBuild: number };
 
   @Prop({ default: OrderStatus.ACCEPTED })
   status: OrderStatus;
@@ -45,11 +45,22 @@ export class Order {
   @Prop({ required: true })
   businessCode: string;
 
-  @Prop({ type: SchemaTypes.ObjectId, required: true, auto: true })
-  id: Types.ObjectId;
-
   @Prop({ required: true })
   settingManeger: number;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
+
+OrderSchema.virtual('id').get(function (
+  this: Document & { _id: Types.ObjectId },
+) {
+  return this._id.toHexString();
+});
+
+OrderSchema.set('toJSON', {
+  virtuals: true,
+});
+
+OrderSchema.set('toObject', {
+  virtuals: true,
+});
