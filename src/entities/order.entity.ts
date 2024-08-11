@@ -28,13 +28,23 @@ export class Order {
 
   @Prop({
     required: true,
+    enum: ['selfCollection', 'delivery'],
+  })
+  deliveryMethod: string;
+
+  @Prop({
+    required: function () { return this.deliveryMethod === 'delivery'; },
     type: {
       city: String,
       street: String,
       numBuild: Number,
+      apartmentNumber: Number,
+      floor: Number,
+      lastName: String
     },
   })
-  destinationAddress: { city: String; street: String; numBuild: Number };
+  destinationAddress: { city: string; street: string; numBuild: number; apartmentNumber: number; floor: number; lastName: string; };
+
 
   @Prop({ default: OrderStatus.ACCEPTED })
   status: OrderStatus;
@@ -53,3 +63,7 @@ export class Order {
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
+function ValidateIf(arg0: (entity: any) => boolean): (target: Order, propertyKey: "destinationAddress") => void {
+  throw new Error('Function not implemented.');
+}
+
