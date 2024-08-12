@@ -63,7 +63,4 @@ export class Order {
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
-function ValidateIf(arg0: (entity: any) => boolean): (target: Order, propertyKey: "destinationAddress") => void {
-  throw new Error('Function not implemented.');
-}
 

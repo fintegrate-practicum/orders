@@ -16,7 +16,7 @@ export class CartService {
   async findByBusinessCodeAndUserId(
     businessCode: string,
     userId: string,
-  ): Promise<any[]> {
+  ): Promise<Cart[]> {
     const carts = await this.cartModel
       .find({ buissnes_code: businessCode, user_id: userId })
       .exec();
