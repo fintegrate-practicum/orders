@@ -1,4 +1,4 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Types, Model } from 'mongoose';
 import { Order } from '../entities/order.entity';
@@ -7,6 +7,8 @@ import { RabbitPublisherService } from '../rabbit-publisher/rabbit-publisher.ser
 
 @Injectable()
 export class OrderService {
+  private readonly logger = new Logger(OrderService.name);
+
   constructor(
     @InjectModel(Order.name) private readonly orderModel: Model<Order>,
     private readonly rabbitPublisherService: RabbitPublisherService,
@@ -37,7 +39,7 @@ export class OrderService {
           date: `${savedOrder.date.getUTCDate()}/${savedOrder.date.getUTCMonth()}/${savedOrder.date.getUTCFullYear()}`,
         },
       };
-      console.log('mail data', message.data);
+      this.logger.log('mail data', message.data);
 
       this.rabbitPublisherService.publishMessageToCommunication(message);
       return { order: savedOrder, status: HttpStatus.CREATED };
