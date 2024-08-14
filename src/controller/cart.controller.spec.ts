@@ -3,7 +3,6 @@ import { CartController } from './cart.controller';
 import { CartService } from '../service/cart.service';
 import { CreateCartDto } from 'src/dto/create-cart.dto';
 import { UpdateCartDto } from 'src/dto/update-cart.dto';
-import { Cart } from '../entities/cart.entity';
 
 describe('CartController', () => {
   let controller: CartController;
