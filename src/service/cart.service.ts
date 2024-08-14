@@ -5,13 +5,12 @@ import { CreateCartDto } from 'src/dto/create-cart.dto';
 import { UpdateCartDto } from 'src/dto/update-cart.dto';
 import { Cart, CartDocument } from 'src/entities/cart.entity';
 import axiosInstance from 'src/axios/inventoryAxios';
-import { response } from 'express';
-import { lastValueFrom } from 'rxjs';
+
 @Injectable()
 export class CartService {
   constructor(
     @InjectModel(Cart.name) private cartModel: Model<CartDocument>
-  ) {}
+  ) { }
 
   async findByBusinessCodeAndUserId(
     businessCode: string,
@@ -23,6 +22,7 @@ export class CartService {
     const enrichedCarts = await Promise.all(
       carts.map(async (cart) => {
         const product = await this.getProductById(cart.product_id);
+
         return {
           ...cart.toObject(),
           product,
@@ -32,11 +32,12 @@ export class CartService {
 
     return enrichedCarts;
   }
+  
 
   async update(id: string, updateCartDto: UpdateCartDto): Promise<Cart> {
-      const product = await this.getProductById(updateCartDto.product_id);
-      if (!product || product.stockQuantity < updateCartDto.metadata.quantity)
-        throw new NotFoundException('not enough in stock');
+    const product = await this.getProductById(updateCartDto.product_id);
+    if (!product || product.stockQuantity < updateCartDto.metadata.quantity)
+      throw new NotFoundException('not enough in stock');
 
     const updatedCart = await this.cartModel
       .findByIdAndUpdate(id, updateCartDto, { new: true })
@@ -65,13 +66,18 @@ export class CartService {
       );
       return response.data;
     } catch (error) {
-      return await this.getComponentById(productId);
+      try {
+        return await this.getComponentById(productId);
+      }
+      catch (error) {
+       throw new NotFoundException('no product or component were founnd')
+      }
     }
   }
   private async getComponentById(productId: string): Promise<any> {
-      const response = await axiosInstance.get(
-        `/inventory/component/${productId}`,
-      );
-      return response.data;
+    const response = await axiosInstance.get(
+      `/inventory/component/${productId}`,
+    );
+    return response.data;
   }
 }

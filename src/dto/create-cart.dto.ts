@@ -3,4 +3,5 @@ export class CreateCartDto {
   readonly product_id: string;
   readonly buissnes_code: string;
   readonly metadata: Record<string, any>;
+  readonly Quantity: number;
 }
