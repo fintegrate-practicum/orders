@@ -5,8 +5,7 @@ import { CreateCartDto } from 'src/dto/create-cart.dto';
 import { UpdateCartDto } from 'src/dto/update-cart.dto';
 import { Cart, CartDocument } from 'src/entities/cart.entity';
 import axiosInstance from 'src/axios/inventoryAxios';
-import { response } from 'express';
-import { lastValueFrom } from 'rxjs';
+
 @Injectable()
 export class CartService {
   constructor(
@@ -20,10 +19,10 @@ export class CartService {
     const carts = await this.cartModel
       .find({ buissnes_code: businessCode, user_id: userId })
       .exec();
-
     const enrichedCarts = await Promise.all(
       carts.map(async (cart) => {
         const product = await this.getProductById(cart.product_id);
+
         return {
           ...cart.toObject(),
           product,
@@ -33,6 +32,7 @@ export class CartService {
 
     return enrichedCarts;
   }
+  
 
   async update(id: string, updateCartDto: UpdateCartDto): Promise<Cart> {
     const product = await this.getProductById(updateCartDto.product_id);
@@ -70,7 +70,7 @@ export class CartService {
         return await this.getComponentById(productId);
       }
       catch (error) {
-
+       throw new NotFoundException('no product or component were founnd')
       }
     }
   }
