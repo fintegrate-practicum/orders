@@ -10,10 +10,10 @@ const objectIdValidator = (value, helpers) => {
 };
 
 export const orderValidationSchema = Joi.object({
-  user: Joi.string().min(3).max(20).required().messages({  
-      'string.min': "Username must contain at least 3 letters",
-      'string.max': "The username must contain a maximum of 20 letters",
-      'any.required': "Username is a mandatory field"
+  userId: Joi.string().min(3).max(20).required().messages({
+    'string.min': "Username must contain at least 3 letters",
+    'string.max': "The username must contain a maximum of 20 letters",
+    'any.required': "Username is a mandatory field"
   }),
   type: Joi.object().when('deliveryMethod', {
     is: 'delivery',
