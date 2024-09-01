@@ -14,6 +14,9 @@ export class Cart {
   @Prop({ required: true })
   buissnes_code: string;
 
+  @Prop({ required: true })
+  Quantity: number;
+
   @Prop({ type: SchemaTypes.Mixed })
   metadata: Record<string, any>;
 }
