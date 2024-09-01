@@ -106,7 +106,7 @@ export class OrderController {
   async GetAllOrdersByBusinessCode(
     @Param('businessCode') businessCode: string,
     @Res() response,
-  ): Promise<any> {
+  ): Promise<Order[]> {
     try {
       const result =
         await this.orderService.findAllByBusinessCode(businessCode);
@@ -126,7 +126,7 @@ export class OrderController {
     @Param('user') user: string,
     @Param('businessCode') businessCode: string,
     @Res() response,
-  ): Promise<any> {
+  ): Promise<Order[]> {
     try {
       const result = await this.orderService.findAllByBusinessCodeAndCustomerId(
         user,

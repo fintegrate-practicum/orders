@@ -3,7 +3,6 @@ import { CartController } from './cart.controller';
 import { CartService } from '../service/cart.service';
 import { CreateCartDto } from 'src/dto/create-cart.dto';
 import { UpdateCartDto } from 'src/dto/update-cart.dto';
-import { Cart } from '../entities/cart.entity';
 
 describe('CartController', () => {
   let controller: CartController;
@@ -71,6 +70,7 @@ describe('CartController', () => {
       product_id: 'testProduct',
       buissnes_code: 'test',
       metadata: {},
+      Quantity: 100,
     };
     expect(await controller.create(dto)).toEqual({
       id: expect.any(String),
@@ -106,6 +106,7 @@ describe('CartController', () => {
       product_id: 'updatedProduct',
       buissnes_code: 'updated',
       metadata: {},
+      Quantity: 100,
     };
     expect(await controller.update(id, dto)).toEqual({
       id,
