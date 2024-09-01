@@ -17,10 +17,11 @@ export class OrderService {
   ): Promise<{ order: Order; status: HttpStatus }> {
     try {
       const createdOrder = new this.orderModel(createOrderDto);
-      const mailAdress =
-        process.env.ENV === 'DEVELOPMENT'
-          ? process.env.SENDGRID_FROM_EMAIL
-          : ''; // Adjust as needed
+      let mailAdress: string;
+      if (process.env.ENV == 'DEVELOPMENT')
+        mailAdress = process.env.SENDGRID_FROM_EMAIL;
+      // else
+      //   mailAdress=savedOrder.user.email
 
       const savedOrder = await createdOrder.save();
       const message = {

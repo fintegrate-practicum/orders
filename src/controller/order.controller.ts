@@ -80,7 +80,7 @@ export class OrderController {
     @Param('id') id: string,
     @Body() businessCode: any,
     @Res() response,
-  ): Promise<any> {
+  ) {
     try {
       const objectId = this.convertToObjectId(id);
       const enabled = await this.generalService.checkingPermissions(
@@ -102,6 +102,7 @@ export class OrderController {
     }
   }
 
+  //צריך לשנות בשיביל פםרטי העסק
   @Get(':businessCode')
   async GetAllOrdersByBusinessCode(
     @Param('businessCode') businessCode: string,
