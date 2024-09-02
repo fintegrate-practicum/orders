@@ -2,13 +2,6 @@ import Joi from 'joi';
 import { OrderStatus } from 'src/enums/order.enum';
 import { Types } from 'mongoose';
 
-const objectIdValidator = (value, helpers) => {
-  if (!Types.ObjectId.isValid(value)) {
-    return helpers.error('any.invalid');
-  }
-  return value;
-};
-
 export const orderValidationSchema = Joi.object({
   userId: Joi.string().min(3).max(20).required().messages({
     'string.min': "Username must contain at least 3 letters",
@@ -54,7 +47,6 @@ export const orderValidationSchema = Joi.object({
     'string.max': "Business code must contain at most 3 letters",
     'any.required': "Business code is a mandatory field"
   }),
-  id: Joi.string().custom(objectIdValidator, 'ObjectId validation').required(),
   settingManeger: Joi.number().min(1).required().messages({
     'number.min': "settingManeger must be positive",
     'any.required': "settingManeger is a mandatory field"

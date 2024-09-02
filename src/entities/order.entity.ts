@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, SchemaTypes, Types } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import { OrderStatus } from '../enums/order.enum';
 
 export type OrderDocument = Order & Document;
@@ -35,6 +35,7 @@ export class Order {
       lastName: String
     },
   })
+
   destinationAddress: { city: string; street: string; numBuild: number; apartmentNumber: number; floor: number; lastName: string; };
 
   @Prop({ default: OrderStatus.ACCEPTED })
@@ -46,12 +47,23 @@ export class Order {
   @Prop({ required: true })
   businessCode: string;
 
-  @Prop({ type: SchemaTypes.ObjectId, required: true, auto: true })
-  id: Types.ObjectId;
-
   @Prop({ required: true })
   settingManeger: number;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
+
+OrderSchema.virtual('id').get(function (
+  this: Document & { _id: Types.ObjectId },
+) {
+  return this._id.toHexString();
+});
+
+OrderSchema.set('toJSON', {
+  virtuals: true,
+});
+
+OrderSchema.set('toObject', {
+  virtuals: true,
+});
 
