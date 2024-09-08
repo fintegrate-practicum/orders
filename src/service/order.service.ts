@@ -23,13 +23,8 @@ export class OrderService {
   ): Promise<{ order: Order; status: HttpStatus }> {
     try {
       const createdOrder = new this.orderModel(createOrderDto);
-<<<<<<< HEAD
-      var mailAdress: string;
-      if (process.env.ENV == "DEVELOPMENT")
-=======
       let mailAdress: string;
       if (process.env.ENV == 'DEVELOPMENT')
->>>>>>> b0b760fe443a625fd93f4016350e4218246fbe66
         mailAdress = process.env.SENDGRID_FROM_EMAIL;
       // else
       //   mailAdress=savedOrder.user.email
@@ -39,11 +34,7 @@ export class OrderService {
         pattern: 'message_queue',
         data: {
           to: mailAdress,
-<<<<<<< HEAD
-          subject: 'message about a new order',
-=======
           subject: 'Message about a new order',
->>>>>>> b0b760fe443a625fd93f4016350e4218246fbe66
           html: '',
           type: 'email',
           kindSubject: 'orderMessage',
@@ -52,11 +43,8 @@ export class OrderService {
           date: `${savedOrder.date.getUTCDate()}/${savedOrder.date.getUTCMonth()}/${savedOrder.date.getUTCFullYear()}`,
         },
       };
-<<<<<<< HEAD
       this.logger.log('mail data', message.data);
-=======
       console.log('Mail data', message.data);
->>>>>>> b0b760fe443a625fd93f4016350e4218246fbe66
 
       this.rabbitPublisherService.publishMessageToCommunication(message);
       return { order: savedOrder, status: HttpStatus.CREATED };

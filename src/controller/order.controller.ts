@@ -8,21 +8,15 @@ import {
   Get,
   Put,
   Param,
-<<<<<<< HEAD
-  Logger
-=======
-  HttpException,
->>>>>>> b0b760fe443a625fd93f4016350e4218246fbe66
+  Logger,
+  HttpException
 } from '@nestjs/common';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { OrderService } from '../service/order.service';
 import { GeneralService } from '../service/general.service';
 import { Types } from 'mongoose';
-<<<<<<< HEAD
 import { OrderStats } from '../interfaces/OrderStats';
-=======
 import { Order } from 'src/entities/order.entity';
->>>>>>> b0b760fe443a625fd93f4016350e4218246fbe66
 
 @Controller('orders')
 export class OrderController {
@@ -31,12 +25,8 @@ export class OrderController {
   constructor(
     private readonly orderService: OrderService,
     private readonly generalService: GeneralService,
-<<<<<<< HEAD
   ) { }
-=======
-  ) {}
 
->>>>>>> b0b760fe443a625fd93f4016350e4218246fbe66
   @Post()
   async AddAnOrder(
     @Body() newOrder: CreateOrderDto,
@@ -116,7 +106,6 @@ export class OrderController {
     }
   }
 
-  //צריך לשנות בשיביל פםרטי העסק
   @Get(':businessCode')
   async GetAllOrdersByBusinessCode(
     @Param('businessCode') businessCode: string,
@@ -158,22 +147,6 @@ export class OrderController {
     }
   }
 
-<<<<<<< HEAD
-  @Get()
-  async GetAllOrders(@Res() response): Promise<Order[]> {
-    try {
-      const result = await this.orderService.findAllOrders();
-      return response.status(HttpStatus.OK).send(result);
-    } catch (error) {
-      this.logger.error('Failed to get all orders', error.stack);
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
-        title: 'Failed to get all orders',
-        content: error.message,
-      });
-    }
-  }
-
-  //מקבל את הקוד של העסק של המנהל המחובר
   @Get('//stats/:businessCode')
   async getOrderStats(@Param('businessCode') businessCode: string, @Res() response): Promise<OrderStats[]> {
     try {
@@ -187,6 +160,7 @@ export class OrderController {
       });
     }
   }
+  
   @Get('//status-distribution/:businessCode')
   async getStatusDistribution(@Param('businessCode') businessCode: string, @Res() response): Promise<OrderStats[]> {
     try {
@@ -201,8 +175,6 @@ export class OrderController {
     }
   }
 
-
-=======
   private convertToObjectId(id: string): Types.ObjectId {
     if (!Types.ObjectId.isValid(id)) {
       throw new HttpException(
@@ -212,7 +184,6 @@ export class OrderController {
     }
     return new Types.ObjectId(id);
   }
->>>>>>> b0b760fe443a625fd93f4016350e4218246fbe66
 }
 
 
