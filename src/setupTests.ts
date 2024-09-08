@@ -7,3 +7,5 @@ process.env.AMQP_USERNAME = 'guest';
 process.env.AMQP_PASSWORD = 'guest';
 process.env.RABBITMQ_EXCHANGE_NAME = 'message_exchange';
 process.env.RABBITMQ_QUEUE_NAME = 'message_queue';
+process.env.VITE_DOCKER_INVENTORY_SERVER_URL =
+  'http://host.docker.internal:4003/api';
