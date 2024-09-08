@@ -14,7 +14,7 @@ export class GeneralService {
       const allOrders =
         await this.orderService.findAllByBusinessCode(businessCode);
       const thisOrder = allOrders.find(
-        (order) => order.id.toString() === id.toString(),
+        (order) => order._id.toString() === id.toString(),
       );
       const oneDay = 24 * 60 * 60 * 1000;
       const diffMilliseconds = Math.abs(
