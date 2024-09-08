@@ -44,8 +44,6 @@ export class OrderService {
         },
       };
       this.logger.log('mail data', message.data);
-      console.log('Mail data', message.data);
-
       this.rabbitPublisherService.publishMessageToCommunication(message);
       return { order: savedOrder, status: HttpStatus.CREATED };
     } catch (error) {

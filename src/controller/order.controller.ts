@@ -160,7 +160,6 @@ export class OrderController {
       });
     }
   }
-  
   @Get('//status-distribution/:businessCode')
   async getStatusDistribution(@Param('businessCode') businessCode: string, @Res() response): Promise<OrderStats[]> {
     try {
