@@ -9,13 +9,12 @@ import {
   Put,
   Param,
   Logger,
-  HttpException
+  HttpException,
 } from '@nestjs/common';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { OrderService } from '../service/order.service';
 import { GeneralService } from '../service/general.service';
 import { Types } from 'mongoose';
-import { OrderStats } from '../interfaces/OrderStats';
 import { Order } from 'src/entities/order.entity';
 
 @Controller('orders')
@@ -26,6 +25,7 @@ export class OrderController {
     private readonly orderService: OrderService,
     private readonly generalService: GeneralService,
   ) { }
+
 
   @Post()
   async AddAnOrder(
@@ -59,6 +59,7 @@ export class OrderController {
       const objectId = this.convertToObjectId(id);
       const enabled = await this.generalService.checkingPermissions(
         objectId,
+        objectId,
         order.businessCode,
       );
       if (!enabled) {
@@ -88,6 +89,7 @@ export class OrderController {
     try {
       const objectId = this.convertToObjectId(id);
       const enabled = await this.generalService.checkingPermissions(
+        objectId,
         objectId,
         businessCode.businessCode,
       );
@@ -126,6 +128,7 @@ export class OrderController {
     }
   }
 
+
   @Get(':businessCode/:user')
   async GetOrdersByBusinessCodeByUser(
     @Param('user') user: string,
@@ -161,7 +164,7 @@ export class OrderController {
       });
     }
   }
-
+  
   private convertToObjectId(id: string): Types.ObjectId {
     if (!Types.ObjectId.isValid(id)) {
       throw new HttpException(
@@ -171,8 +174,8 @@ export class OrderController {
     }
     return new Types.ObjectId(id);
   }
-
 }
+
 
 
 

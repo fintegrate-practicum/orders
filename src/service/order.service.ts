@@ -30,6 +30,7 @@ export class OrderService {
       //   mailAdress=savedOrder.user.email
 
 
+
       const savedOrder = await createdOrder.save();
       const message = {
         pattern: 'message_queue',
@@ -45,6 +46,7 @@ export class OrderService {
         },
       };
       this.logger.log('mail data', message.data);
+      console.log('Mail data', message.data);
       console.log('Mail data', message.data);
 
       this.rabbitPublisherService.publishMessageToCommunication(message);
@@ -64,8 +66,8 @@ export class OrderService {
     try {
       const updatedOrder = await this.orderModel.findOneAndUpdate(
         { _id: id },
+        { _id: id },
         { $set: createOrderDto },
-        { new: true },
       );
       if (!updatedOrder) {
         return { order: null, status: HttpStatus.NOT_FOUND };
@@ -109,6 +111,7 @@ export class OrderService {
       );
     }
   }
+
 
   async findAllByBusinessCodeAndCustomerId(
     user: string,
