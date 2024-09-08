@@ -16,6 +16,7 @@ import { OrderService } from '../service/order.service';
 import { GeneralService } from '../service/general.service';
 import { Types } from 'mongoose';
 import { Order } from 'src/entities/order.entity';
+import { OrderStats } from 'src/interfaces/OrderStats';
 
 @Controller('orders')
 export class OrderController {
@@ -164,7 +165,7 @@ export class OrderController {
       });
     }
   }
-  
+
   private convertToObjectId(id: string): Types.ObjectId {
     if (!Types.ObjectId.isValid(id)) {
       throw new HttpException(
@@ -174,6 +175,34 @@ export class OrderController {
     }
     return new Types.ObjectId(id);
   }
+
+  @Get('//stats/:businessCode')
+  async getOrderStats(@Param('businessCode') businessCode: string, @Res() response): Promise<OrderStats[]> {
+    try {
+      const result = await this.orderService.getOrderStats(businessCode);
+      return response.status(HttpStatus.OK).send(result);
+    } catch (error) {
+      this.logger.error('Failed to get result', error.stack);
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
+        title: 'Failed to get result',
+        content: error.message,
+      });
+    }
+  }
+  @Get('//status-distribution/:businessCode')
+  async getStatusDistribution(@Param('businessCode') businessCode: string, @Res() response): Promise<OrderStats[]> {
+    try {
+      const result = await this.orderService.getstatusDistribution(businessCode);
+      return response.status(HttpStatus.OK).send(result);
+    } catch (error) {
+      this.logger.error('Failed to get result', error.stack);
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
+        title: 'Failed to get result',
+        content: error.message,
+      });
+    }
+  }
+
 }
 
 
