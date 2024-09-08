@@ -9,7 +9,7 @@ import {
   Put,
   Param,
   Logger,
-  HttpException
+  HttpException,
 } from '@nestjs/common';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { OrderService } from '../service/order.service';
@@ -59,6 +59,7 @@ export class OrderController {
       const objectId = this.convertToObjectId(id);
       const enabled = await this.generalService.checkingPermissions(
         objectId,
+        objectId,
         order.businessCode,
       );
       if (!enabled) {
@@ -88,6 +89,7 @@ export class OrderController {
     try {
       const objectId = this.convertToObjectId(id);
       const enabled = await this.generalService.checkingPermissions(
+        objectId,
         objectId,
         businessCode.businessCode,
       );
@@ -184,6 +186,7 @@ export class OrderController {
     return new Types.ObjectId(id);
   }
 }
+
 
 
 
