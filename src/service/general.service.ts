@@ -7,7 +7,7 @@ export class GeneralService {
   constructor(private readonly orderService: OrderService) {}
   //בדיקת הרשאה לעדיכון ההזמנה על פי סטאטוס ההזמנה והרשאות מנהל
   async checkingPermissions(
-id: Types.ObjectId, objectId: Types.ObjectId, businessCode: string,
+id: Types.ObjectId, businessCode: string,
   ): Promise<boolean> {
     try {
       const allOrders =

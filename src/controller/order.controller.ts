@@ -16,7 +16,6 @@ import { OrderService } from '../service/order.service';
 import { GeneralService } from '../service/general.service';
 import { Types } from 'mongoose';
 import { Order } from 'src/entities/order.entity';
-import { OrderStats } from 'src/interfaces/OrderStats';
 
 @Controller('orders')
 export class OrderController {
@@ -26,7 +25,6 @@ export class OrderController {
     private readonly orderService: OrderService,
     private readonly generalService: GeneralService,
   ) { }
-
 
   @Post()
   async AddAnOrder(
@@ -60,7 +58,6 @@ export class OrderController {
       const objectId = this.convertToObjectId(id);
       const enabled = await this.generalService.checkingPermissions(
         objectId,
-        objectId,
         order.businessCode,
       );
       if (!enabled) {
@@ -91,7 +88,6 @@ export class OrderController {
       const objectId = this.convertToObjectId(id);
       const enabled = await this.generalService.checkingPermissions(
         objectId,
-        objectId,
         businessCode.businessCode,
       );
       if (!enabled) {
@@ -109,7 +105,6 @@ export class OrderController {
     }
   }
 
-  //צריך לשנות בשיביל פםרטי העסק
   @Get(':businessCode')
   async GetAllOrdersByBusinessCode(
     @Param('businessCode') businessCode: string,
@@ -128,7 +123,6 @@ export class OrderController {
         });
     }
   }
-
 
   @Get(':businessCode/:user')
   async GetOrdersByBusinessCodeByUser(
@@ -152,20 +146,6 @@ export class OrderController {
     }
   }
 
-  @Get()
-  async GetAllOrders(@Res() response): Promise<Order[]> {
-    try {
-      const result = await this.orderService.findAllOrders();
-      return response.status(HttpStatus.OK).send(result);
-    } catch (error) {
-      this.logger.error('Failed to get all orders', error.stack);
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
-        title: 'Failed to get all orders',
-        content: error.message,
-      });
-    }
-  }
-
   private convertToObjectId(id: string): Types.ObjectId {
     if (!Types.ObjectId.isValid(id)) {
       throw new HttpException(
@@ -175,34 +155,6 @@ export class OrderController {
     }
     return new Types.ObjectId(id);
   }
-
-  @Get('//stats/:businessCode')
-  async getOrderStats(@Param('businessCode') businessCode: string, @Res() response): Promise<OrderStats[]> {
-    try {
-      const result = await this.orderService.getOrderStats(businessCode);
-      return response.status(HttpStatus.OK).send(result);
-    } catch (error) {
-      this.logger.error('Failed to get result', error.stack);
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
-        title: 'Failed to get result',
-        content: error.message,
-      });
-    }
-  }
-  @Get('//status-distribution/:businessCode')
-  async getStatusDistribution(@Param('businessCode') businessCode: string, @Res() response): Promise<OrderStats[]> {
-    try {
-      const result = await this.orderService.getstatusDistribution(businessCode);
-      return response.status(HttpStatus.OK).send(result);
-    } catch (error) {
-      this.logger.error('Failed to get result', error.stack);
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
-        title: 'Failed to get result',
-        content: error.message,
-      });
-    }
-  }
-
 }
 
 
