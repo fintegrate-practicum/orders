@@ -12,7 +12,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { CreateOrderDto } from '../dto/create-order.dto';
-import { OrderService } from '../service/order.service';
+import { OrderService, OrderStats, StatusDistribution } from '../service/order.service';
 import { GeneralService } from '../service/general.service';
 import { Types } from 'mongoose';
 import { Order } from 'src/entities/order.entity';
@@ -144,6 +144,20 @@ export class OrderController {
           content: error.message,
         });
     }
+  }
+
+  //כתבתי בצורה כזאת // כי אחרת זה לא עבד, צריך לתקן בהמשך 
+  @Get('//stats/:businessCode')
+  async getOrderStats(@Param('businessCode') businessCode: string, @Res() response): Promise<OrderStats[]> {
+    const result = await this.orderService.getOrderStats(businessCode);
+    return response.status(HttpStatus.OK).send(result);
+  }
+
+  //כתבתי בצורה כזאת // כי אחרת זה לא עבד, צריך לתקן בהמשך 
+  @Get('//status-distribution/:businessCode')
+  async getStatusDistribution(@Param('businessCode') businessCode: string, @Res() response): Promise<StatusDistribution[]> {
+    const result = await this.orderService.getstatusDistribution(businessCode);
+    return response.status(HttpStatus.OK).send(result);
   }
 
   private convertToObjectId(id: string): Types.ObjectId {
