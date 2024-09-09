@@ -146,16 +146,18 @@ export class OrderController {
     }
   }
 
+  //כתבתי בצורה כזאת // כי אחרת זה לא עבד, צריך לתקן בהמשך 
   @Get('//stats/:businessCode')
   async getOrderStats(@Param('businessCode') businessCode: string, @Res() response): Promise<OrderStats[]> {
-      const result = await this.orderService.getOrderStats(businessCode);
-      return response.status(HttpStatus.OK).send(result);
+    const result = await this.orderService.getOrderStats(businessCode);
+    return response.status(HttpStatus.OK).send(result);
   }
 
+  //כתבתי בצורה כזאת // כי אחרת זה לא עבד, צריך לתקן בהמשך 
   @Get('//status-distribution/:businessCode')
   async getStatusDistribution(@Param('businessCode') businessCode: string, @Res() response): Promise<StatusDistribution[]> {
-      const result = await this.orderService.getstatusDistribution(businessCode);
-      return response.status(HttpStatus.OK).send(result);
+    const result = await this.orderService.getstatusDistribution(businessCode);
+    return response.status(HttpStatus.OK).send(result);
   }
 
   private convertToObjectId(id: string): Types.ObjectId {
