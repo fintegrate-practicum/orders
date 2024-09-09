@@ -1,16 +1,20 @@
-import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Types, Model } from 'mongoose';
 import { Order, OrderDocument } from '../entities/order.entity';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { RabbitPublisherService } from '../rabbit-publisher/rabbit-publisher.service';
+import { OrderStatus } from 'src/enums/order.enum';
+
 
 @Injectable()
 export class OrderService {
+  private readonly logger = new Logger(OrderService.name);
+
   constructor(
     @InjectModel(Order.name) private readonly orderModel: Model<OrderDocument>,
     private readonly rabbitPublisherService: RabbitPublisherService,
-  ) {}
+  ) { }
 
   async create(
     createOrderDto: CreateOrderDto,
@@ -20,9 +24,6 @@ export class OrderService {
       let mailAdress: string;
       if (process.env.ENV == 'DEVELOPMENT')
         mailAdress = process.env.SENDGRID_FROM_EMAIL;
-      // else
-      //   mailAdress=savedOrder.user.email
-
       const savedOrder = await createdOrder.save();
       const message = {
         pattern: 'message_queue',
@@ -37,8 +38,8 @@ export class OrderService {
           date: `${savedOrder.date.getUTCDate()}/${savedOrder.date.getUTCMonth()}/${savedOrder.date.getUTCFullYear()}`,
         },
       };
+      this.logger.log('mail data', message.data);
       console.log('Mail data', message.data);
-
       this.rabbitPublisherService.publishMessageToCommunication(message);
       return { order: savedOrder, status: HttpStatus.CREATED };
     } catch (error) {

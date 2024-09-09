@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as amqp from 'amqplib';
 
@@ -8,10 +8,11 @@ export class RabbitPublisherService {
   private channel: amqp.Channel;
   private readonly nameExchange: string = 'message_exchange';
   private readonly nameQueue: string = 'message_queue';
+  private readonly logger = new Logger(RabbitPublisherService.name);
 
   constructor(private configService: ConfigService) {
     this.connectToRabbitMQ();
-    console.log('connected to rabbit');
+    this.logger.log('connected to rabbit');
   }
 
   async connectToRabbitMQ() {
@@ -29,7 +30,7 @@ export class RabbitPublisherService {
 
       await this.initializeRabbitMQ();
     } catch (error) {
-      console.error('Error connecting to RabbitMQ:', error);
+      this.logger.error('Error connecting to RabbitMQ:', error);
     }
   }
 
@@ -45,7 +46,7 @@ export class RabbitPublisherService {
         'message_type',
       );
     } catch (error) {
-      console.error('Error initializing RabbitMQ:', error);
+      this.logger.error('Error initializing RabbitMQ:', error);
     }
   }
 
@@ -59,9 +60,9 @@ export class RabbitPublisherService {
         'message_type',
         Buffer.from(messageData),
       );
-      console.log(`Message published to exchange :  ${exchangeName} `);
+      this.logger.log(`Message published to exchange :  ${exchangeName} `);
     } catch (error) {
-      console.error(`Message not published with routing key ${error} `);
+      this.logger.error(`Message not published with routing key ${error} `);
     }
   }
 }

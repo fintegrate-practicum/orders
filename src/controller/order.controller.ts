@@ -8,6 +8,7 @@ import {
   Get,
   Put,
   Param,
+  Logger,
   HttpException,
 } from '@nestjs/common';
 import { CreateOrderDto } from '../dto/create-order.dto';
@@ -18,10 +19,12 @@ import { Order } from 'src/entities/order.entity';
 
 @Controller('orders')
 export class OrderController {
+  private readonly logger = new Logger(OrderController.name);
+
   constructor(
     private readonly orderService: OrderService,
     private readonly generalService: GeneralService,
-  ) {}
+  ) { }
 
   @Post()
   async AddAnOrder(
@@ -102,7 +105,6 @@ export class OrderController {
     }
   }
 
-  //צריך לשנות בשיביל פםרטי העסק
   @Get(':businessCode')
   async GetAllOrdersByBusinessCode(
     @Param('businessCode') businessCode: string,
