@@ -149,29 +149,14 @@ export class OrderController {
 
   @Get('//stats/:businessCode')
   async getOrderStats(@Param('businessCode') businessCode: string, @Res() response): Promise<OrderStats[]> {
-    try {
       const result = await this.orderService.getOrderStats(businessCode);
       return response.status(HttpStatus.OK).send(result);
-    } catch (error) {
-      this.logger.error('Failed to get result', error.stack);
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
-        title: 'Failed to get result',
-        content: error.message,
-      });
-    }
   }
+
   @Get('//status-distribution/:businessCode')
   async getStatusDistribution(@Param('businessCode') businessCode: string, @Res() response): Promise<OrderStats[]> {
-    try {
       const result = await this.orderService.getstatusDistribution(businessCode);
       return response.status(HttpStatus.OK).send(result);
-    } catch (error) {
-      this.logger.error('Failed to get result', error.stack);
-      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).send({
-        title: 'Failed to get result',
-        content: error.message,
-      });
-    }
   }
 
   private convertToObjectId(id: string): Types.ObjectId {
