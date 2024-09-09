@@ -116,15 +116,4 @@ export class OrderService {
       );
     }
   }
-  async findAllOrders(): Promise<Order[]> {
-    try {
-      return await this.orderModel.find().exec();
-    } catch (error) {
-      this.logger.error('Failed to retrieve all orders', error.stack);
-      throw new HttpException(
-        'Failed to retrieve all orders',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
 }
