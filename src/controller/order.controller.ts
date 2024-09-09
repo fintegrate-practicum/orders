@@ -59,7 +59,6 @@ export class OrderController {
       const objectId = this.convertToObjectId(id);
       const enabled = await this.generalService.checkingPermissions(
         objectId,
-        objectId,
         order.businessCode,
       );
       if (!enabled) {
@@ -89,7 +88,6 @@ export class OrderController {
     try {
       const objectId = this.convertToObjectId(id);
       const enabled = await this.generalService.checkingPermissions(
-        objectId,
         objectId,
         businessCode.businessCode,
       );
