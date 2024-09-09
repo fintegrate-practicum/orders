@@ -12,10 +12,9 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { CreateOrderDto } from '../dto/create-order.dto';
-import { OrderService } from '../service/order.service';
+import { OrderService, OrderStats, StatusDistribution } from '../service/order.service';
 import { GeneralService } from '../service/general.service';
 import { Types } from 'mongoose';
-import { OrderStats } from '../interfaces/OrderStats';
 import { Order } from 'src/entities/order.entity';
 
 @Controller('orders')
@@ -154,7 +153,7 @@ export class OrderController {
   }
 
   @Get('//status-distribution/:businessCode')
-  async getStatusDistribution(@Param('businessCode') businessCode: string, @Res() response): Promise<OrderStats[]> {
+  async getStatusDistribution(@Param('businessCode') businessCode: string, @Res() response): Promise<StatusDistribution[]> {
       const result = await this.orderService.getstatusDistribution(businessCode);
       return response.status(HttpStatus.OK).send(result);
   }

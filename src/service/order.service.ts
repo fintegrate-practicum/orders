@@ -4,9 +4,17 @@ import { Types, Model } from 'mongoose';
 import { Order, OrderDocument } from '../entities/order.entity';
 import { CreateOrderDto } from '../dto/create-order.dto';
 import { RabbitPublisherService } from '../rabbit-publisher/rabbit-publisher.service';
-import { OrderStats } from '../interfaces/OrderStats';
-import { StatusDistribution } from '../interfaces/statusDistribution';
 import { OrderStatus } from 'src/enums/order.enum';
+
+export interface OrderStats {
+  date: string;
+  count: number;
+}
+
+export interface StatusDistribution {
+  status: OrderStatus;
+  count: number;
+}
 
 
 @Injectable()
@@ -26,9 +34,6 @@ export class OrderService {
       let mailAdress: string;
       if (process.env.ENV == 'DEVELOPMENT')
         mailAdress = process.env.SENDGRID_FROM_EMAIL;
-      // else
-      //   mailAdress=savedOrder.user.email
-
       const savedOrder = await createdOrder.save();
       const message = {
         pattern: 'message_queue',
@@ -120,24 +125,11 @@ export class OrderService {
       );
     }
   }
-  async findAllOrders(): Promise<Order[]> {
-    try {
-      return await this.orderModel.find().exec();
-    } catch (error) {
-      this.logger.error('Failed to retrieve all orders', error.stack);
-      throw new HttpException(
-        'Failed to retrieve all orders',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
 
   async getOrderStats(businessCode: string): Promise<OrderStats[]> {
-    // תאריך של השבועיים האחרונים
     const twoWeeksAgo = new Date();
     twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
 
-    // מבצע אגרגציה למציאת מספר ההזמנות לפי תאריך
     const stats = await this.orderModel.aggregate([
       {
         $match: {
@@ -181,26 +173,25 @@ export class OrderService {
     return stats;
   }
 
-
   async getstatusDistribution(businessCode: string): Promise<StatusDistribution[]> {
     try {
       this.logger.log(`Matching businessCode: ${businessCode}`);
-  
+
       const stats = await this.orderModel.aggregate([
         { $match: { businessCode: businessCode } },
         { $group: { _id: '$status', count: { $sum: 1 } } },
         { $project: { _id: 0, status: '$_id', count: 1 } }
       ]);
-  
+
       this.logger.log('Aggregation results:', stats);
-  
+
       const statusMap = {
         [OrderStatus.ACCEPTED]: 'ACCEPTED',
         [OrderStatus.HANDLING]: 'HANDLING',
         [OrderStatus.READY]: 'READY',
         [OrderStatus.SENT]: 'SENT',
       };
-  
+
       return stats.map(item => ({
         count: item.count,
         status: statusMap[item.status] || 'UNKNOWN'
@@ -213,4 +204,5 @@ export class OrderService {
       );
     }
   }
-  }
+
+}
